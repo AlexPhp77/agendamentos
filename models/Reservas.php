@@ -16,11 +16,14 @@ class Reservas extends Conexao{
 		} return $dados; 
 	}
 
-	public function deletarReserva($id){
+	public function deletarReserva($id, $id_reserva){ 
 
-    	$sql = $this->pdo->prepare('DELETE FROM reserva WHERE id_usuario = :id_usuario');
-    	$sql->bindValue(':id_usuario', $id_usuario);
-    	$sql->execute();    	
+    	$sql = $this->pdo->prepare('DELETE FROM reserva WHERE id_usuario = :id_usuario AND id = :id');    	
+    	$sql->bindValue(':id', $id_reserva);
+    	$sql->bindValue(':id_usuario', $id);
+    	$sql->execute();  
+
+    	return true; 
     }
 
 	public function pesquisar($texto){
@@ -69,7 +72,7 @@ class Reservas extends Conexao{
 
 	public function temReserva($id){
 
-		$sql = $this->pdo->prepare("SELECT id_usuario, data_inicio, data_fim FROM reserva WHERE id_usuario = :id");
+		$sql = $this->pdo->prepare("SELECT * FROM reserva WHERE id_usuario = :id");
 		$sql->bindValue(':id', $id);
 		$sql->execute(); 
 

@@ -8,13 +8,22 @@ class pacienteController extends controller{
 		
 		$u = new Usuarios();
 		$r = new Reservas(); 
-		
+
+		if(isset($_GET['id']) && !empty($_GET['id']) && isset($_POST['excluir'])){
+		    $id_reserva = addslashes($_GET['id']);			
+			$r->deletarReserva($id_reserva);
+		}
 
 		$id = '';
 		if(isset($_GET['id']) && !empty($_GET['id'])){
 			$id = addslashes($_GET['id']);
 		}
-        
+
+		if(isset($_GET['id_reserva']) && !empty($_GET['id_reserva'])){
+		    $id_reserva = addslashes($_GET['id_reserva']);		   		
+		    $r->deletarReserva($id, $id_reserva);
+		}
+
 		$aviso = $r->temReserva($id);     		
        
 		if(!empty($_POST['nome']) && !empty($_POST['cpf'])){
@@ -80,8 +89,7 @@ class pacienteController extends controller{
 			'm' => $msg			
 			
 		    );
-        }	       
-         
-		$this->loadTemplate('informacoes_paciente', $dados);	
+        }	                
+		$this->loadTemplate('informacoes_paciente', $dados);		
 	}
 }

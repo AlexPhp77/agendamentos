@@ -10,7 +10,7 @@ class Conexao{
 		$config = array();
 
 		if(MEIO == 'developer'){
-			$config['dbname'] = 'sistema_dentista';
+			$config['dbname'] = 'teste';
 			$config['host'] = 'localhost';
 			$config['dbuser'] = 'root';
 			$config['dbpass'] = '';

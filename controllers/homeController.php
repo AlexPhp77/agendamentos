@@ -9,7 +9,7 @@ class homeController extends controller{
         $u = new Usuarios();               
 
         /*Paginação*/
-        $inicio = 1;
+        $inicio = 0;
         $btn = 3;
 
         $total_reg = $u->qtUsuarios();       

@@ -1,5 +1,29 @@
 
 <div class="container">
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">DELETAR DADOS DO PACIENTE</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Tem certeza que deseja excluir esse usuário? 
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info" data-dismiss="modal">CANCELAR</button>
+            <?php if(isset($_GET['id'])){ $id = addslashes($_GET['id']);} ?>
+            <a href="<?php echo BASE_URL; ?>paciente/deletar/?id_usuario=<?php echo $id; ?>">
+            <button style="float: right; margin-left: 10px;" class="btn btn-danger">SIM</button>   
+            </a>   
+        </div>
+      </div>
+    </div>
+  </div>
   
   <form method="POST">  
   <div class="form-row">
@@ -60,13 +84,14 @@
     <div style="margin-top: 10px">
     	<button type="submit" class="btn btn-info">Editar</button>           
     </div>   
-  </form> 
-   <?php if(isset($_GET['id'])){ $id = addslashes($_GET['id']); echo $id; } ?>
-   <a href="<?php echo BASE_URL; ?>paciente/deletar/?id_usuario=<?php echo $id; ?>">
-      <button style="float: right; margin-left: 10px;" class="btn btn-danger">Deletar</button>   
-   </a>   
-   
-         <button style="float: right;" id="marcar" class="btn btn-outline-success">Marcar consulta</button>
+  </form>    
+
+    <!-- Button trigger modal -->
+    <button style="float: right; margin-left: 10px;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+      Deletar
+    </button>
+     
+    <button style="float: right;" id="marcar" class="btn btn-outline-success">Marcar consulta</button>
   
   <br/><br/>
   <hr/>
@@ -74,28 +99,35 @@
     <div class="alert alert-danger" style="margin-top: 10px;">
       <?php echo $m; ?>
     </div>  
-  <?php endif; ?>
+  <?php endif; ?>  
+
+  <div class="aviso-delete">
+  
+  </div>
 
   <div class="reservar">
     
   </div> 
 
-
-
 <?php if($aviso['aviso'] == true): ?>   
-    <?php for($i=0; $i < count($aviso['horas']); $i++): ?>
+  
+
+    <?php for($i=0; $i < count($aviso['horas']); $i++): ?>   
+    <?php if(isset($_GET['id']) && !empty($_GET['id'])){ $id=addslashes($_GET['id']); } ?> 
     <div id="aviso-reserva" class="alert alert-success" role="alert">      
-    <button type="button" class="close" aria-label="Close">
-      <span type="submit" aria-hidden="true">&times;</span>
+    <button type="button" class="close" aria-label="Close"> 
+    <a href="<?php echo BASE_URL; ?>paciente/?id=<?php echo $id; ?>&id_reserva=<?php echo $aviso['horas'][$i]['id'] ?>">
+      <span value="excluir" input="submit" aria-hidden="true">&times;</span>        
+    </a>
     </button>
-      <?php $datahora = date('d/m/Y \à\s H:i', strtotime($aviso['horas'][$i][1])); ?>
+      <?php $datahora = date('d/m/Y \à\s H:i', strtotime($aviso['horas'][$i]['data_inicio'])); ?>
         Esse usuário tem consulta marcada dia <?php echo $datahora; ?>
     </div>
     <?php endfor; ?>
 <?php endif; ?>
 
 
- <!--<?php /*if($aviso['aviso'] == true): ?>
+  <!--<?php /*if($aviso['aviso'] == true): ?>
     <div id="aviso-reserva" class="alert alert-success" role="alert">
       <?php $datahora = date('d/m/Y H:i', strtotime($aviso['horas'][0][1])); ?>
         Esse usuário tem consulta marcada dia <?php echo $datahora; ?>

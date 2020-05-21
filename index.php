@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-define('BASE_URL', 'http://localhost/sistemas/dentista/');
+define('BASE_URL', 'http://localhost/sistemas/agendamentos/');
 date_default_timezone_set('America/Sao_Paulo');
 
 spl_autoload_register(function($class){

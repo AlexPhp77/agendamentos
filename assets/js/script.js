@@ -4,7 +4,7 @@ $(function(){
 		var texto = $(this).val();	
         
 		$.ajax({
-			url:'http://localhost/sistemas/dentista/ajax',
+			url:'http://localhost/sistemas/agendamentos/ajax',
 			type:'POST',
 			data:{busca:texto},
 			success:function(html){
@@ -16,13 +16,12 @@ $(function(){
 	$('#marcar').on('click', function(){		
         
 		$.ajax({
-			url:'http://localhost/sistemas/dentista/reservar',
+			url:'http://localhost/sistemas/agendamentos/reservar',
 			type:'POST',
 			data:{},
 			success:function(html){
 				$('.reservar').html(html);
 			}
 		});	
-	});
-	
+	});	
 });
