@@ -1,3 +1,12 @@
+<?php
+if(!isset($_SESSION['logado']) && empty($_SESSION['logado'])){
+  unset($_SESSION['logado']);
+  ?>
+  <script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>./"</script>
+  <?php
+  exit;
+}
+?>
 
 <div class="container">
 
@@ -95,9 +104,15 @@
   
   <br/><br/>
   <hr/>
+
   <?php if(!empty($m)): ?>  
     <div class="alert alert-danger" style="margin-top: 10px;">
       <?php echo $m; ?>
+    </div>  
+  <?php endif; ?>  
+  <?php if(!empty($m2)): ?>  
+    <div class="alert alert-danger" style="margin-top: 10px;">
+      <?php echo $m2; ?>
     </div>  
   <?php endif; ?>  
 
@@ -109,9 +124,7 @@
     
   </div> 
 
-<?php if($aviso['aviso'] == true): ?>   
-  
-
+<?php if($aviso['aviso'] == true): ?>
     <?php for($i=0; $i < count($aviso['horas']); $i++): ?>   
     <?php if(isset($_GET['id']) && !empty($_GET['id'])){ $id=addslashes($_GET['id']); } ?> 
     <div id="aviso-reserva" class="alert alert-success" role="alert">      

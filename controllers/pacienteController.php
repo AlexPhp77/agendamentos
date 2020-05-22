@@ -9,11 +9,6 @@ class pacienteController extends controller{
 		$u = new Usuarios();
 		$r = new Reservas(); 
 
-		if(isset($_GET['id']) && !empty($_GET['id']) && isset($_POST['excluir'])){
-		    $id_reserva = addslashes($_GET['id']);			
-			$r->deletarReserva($id_reserva);
-		}
-
 		$id = '';
 		if(isset($_GET['id']) && !empty($_GET['id'])){
 			$id = addslashes($_GET['id']);
@@ -52,6 +47,7 @@ class pacienteController extends controller{
 		}
         
         $msg = '';
+        $msg2 = '';
 		if(isset($_POST['data']) && !empty($_POST['data'])){
 		   
             $data = addslashes($_POST['data']);
@@ -62,15 +58,23 @@ class pacienteController extends controller{
 			$data_inicio = $Y."-".$m."-".$data." ".$hora;
 			
 			date_default_timezone_set('America/Sao_Paulo'); 
-			$data_atual = date('Y-m-d H:i'); 
+			$data_atual = date('Y-m-d H:i');
+			
 			print_r($data_inicio);                
            
 			if($data_inicio >= $data_atual){
 				$r->addReservas($id, $data_inicio);
+
+				if($false = $r->verificarDisponibilidade($data_inicio) == false){
+			    $msg2 = "Já existe consulta marcada para esse horário!";
+			    } else{
+			    	$msg2 = "Consulta marcada com sucesso!";
+			    }
+			    
 			} else{
 				$msg = "Hora inválida!";
 			}
-		}	
+		}			
        
         foreach($dados as $dado){
 
@@ -86,7 +90,8 @@ class pacienteController extends controller{
 			'rua' => $dado['rua'],
 			'numero' => $dado['numero'],
 			'aviso' => $aviso,	
-			'm' => $msg			
+			'm' => $msg,	
+			'm2'=> $msg2		
 			
 		    );
         }	                

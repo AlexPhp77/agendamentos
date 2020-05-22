@@ -27,7 +27,7 @@ class cadastroController extends controller{
             $m = '';
             
 						
-			$u->infoAllCadastrar($nomecompleto, $idade, $cpf, $email, $telefone, $senha, $estado, $cidade, $cep, $rua, $numero);			
+			$m = $u->infoAllCadastrar($nomecompleto, $idade, $cpf, $email, $telefone, $senha, $estado, $cidade, $cep, $rua, $numero);			
 
             $dados = array(
 		       'm' => $m 

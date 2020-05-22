@@ -21,7 +21,7 @@ class Usuarios extends Conexao{
     	$this->setCpf($cpf);
     	$this->setEmail($email);
     	$this->setFone($telefone);
-    	$this->setSenha($senha);
+        $this->setSenha($senha);
 
     	$this->setEstado($estado);
     	$this->setCidade($cidade);
@@ -70,7 +70,9 @@ class Usuarios extends Conexao{
 		$this->telefone = $telefone;
 	}
 	private function setSenha($senha){
-		$this->senha = $senha;
+		if($senha >= 8){
+			$this->senha = $senha;             		
+		} 
 	}
 	private function setEstado($estado){
 		$this->estado = $estado;
@@ -101,6 +103,19 @@ class Usuarios extends Conexao{
     	}
 
     }
+    public function permissoes(){  
+
+	        if(isset($_SESSION['logado'])){       
+	        
+	    	$sql = $this->pdo->prepare('SELECT permissoes FROM usuarios WHERE id = :id');
+	        $sql->bindValue(':id', $_SESSION['logado']);
+	        $sql->execute();        
+
+	        if($sql->rowCount() > 0){
+	            return $dado = $sql->fetch(); 
+	        }
+        }
+    }    
     private function cadastrar(){    	
 
     	if($this->verificarEmail()){
@@ -125,7 +140,9 @@ class Usuarios extends Conexao{
 	    	$sql->bindValue(':cep', $this->cep);
 	    	$sql->bindValue(':rua', $this->rua);
 	    	$sql->bindValue(':numero', $this->numero);
-	    	$sql->execute();   	    	  
+	    	$sql->execute();   
+
+	    	return true;     	  
     	}  	
 	}
 	private function editarPaciente(){
@@ -176,9 +193,10 @@ class Usuarios extends Conexao{
         	return $dados['c'];
         } return $dados;
 	}
-	public function getUsuarios($inicio, $total_reg){
+	public function getUsuarios($inicio, $total_reg){		 
+
         $dados = array();
-		$sql = $this->pdo->query("SELECT id, nome, cpf, email, telefone FROM usuarios LIMIT $inicio , $total_reg");        
+		$sql = $this->pdo->query("SELECT id, nome, cpf, email, telefone, permissoes FROM usuarios LIMIT $inicio , $total_reg");        
         if($sql->rowCount() > 0){
         	return $dados = $sql->fetchAll();
         } return $dados; 

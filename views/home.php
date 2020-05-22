@@ -1,12 +1,17 @@
 
 
 
-<?php if(isset($_SESSION['logado']) && !empty($_SESSION['logado'])): ?>
+<?php if(isset($_SESSION['logado']) && !empty($_SESSION['logado']) && $permissao['permissoes'] == 'ADMINISTRADOR'): ?>
 	<div class="container">  
-
+		    <div>
+		    	<?php echo "Área restrita ( ".$permissao['permissoes']." )";  ?>
+		    </div>
 			<table class="table table-dark table-hover table-responsive-lg ">
 			  <thead>
-			    <tr>	
+			    <tr>
+			      <th style="font-size: 14px">
+			      	<?php echo $total_reg; ?> pacientes cadastrados  
+			      </th>	
 			      <th scope="col" colspan="5">
 			      	<form method="POST" class="form-inline my-2 my-lg-0 flex-row-reverse">			      		
 					    <input id="busca" name="nome"  class="form-control mr-sm-2" type="search" placeholder="Pesquisar" aria-label="Search">
@@ -25,8 +30,11 @@
               </thead>
 			  <?php foreach($lista as $chave => $usuario):  ?>
 			    <tr>
-			      <th scope="row"><?php echo next($usuario); ?></th>
-			      <td><?php echo $usuario['nome']?></td>
+			      <th scope="row"><?php echo next($usuario) - 1; ?></th>			    
+			      	<td>
+			      	<a class="text-light" href="<?php echo BASE_URL; ?>paciente/?id=<?php echo $usuario['id'] ?>">
+			      		<?php echo $usuario['nome']?></td>
+			      	</a>			     
 			      <td><?php echo $usuario['cpf']?></td>    
 			      <td><?php echo $usuario['email']?></td>
 			      <td><?php echo $usuario['telefone']?></td>
@@ -34,25 +42,29 @@
 			  <?php endforeach; ?>
 			   
 			  </tbody>
-			</table>		
-			
-			<nav aria-label="Page navigation example">
-			  <ul class="pagination pagination-lg justify-content-center bg-dark">
+			</table>	
 
-             
-			    <li class="page-item"><a class="page-link bg-dark text-light"  <?php if(isset($_GET['p']) && !empty($_GET['p'])){$pagina = addslashes($_GET['p']) -1; ?> href="<?php echo ($pagina >= 1) ? '?p='.$pagina  :''; ?>"   <?php } ?>  >Anterior</a></li>			
-                
-                <?php for($i = 1; $i <= $por_pagina; $i++): ?>
-                	<?php if($i <= 6):?>
-			        <li class="page-item"><a class="page-link bg-dark text-light" href="<?php echo BASE_URL; ?>?p=<?php echo $i; ?>"><?php echo $i; ?></a></li>
-			         <?php endif; ?>
-			    <?php endfor; ?>   
-             
-                <li class="page-item"><a class="page-link bg-dark text-light"  <?php if(isset($_GET['p']) && !empty($_GET['p']) && $_GET['p']){$pagina = addslashes($_GET['p']) +1; } else { $pagina = '2'; } ?> href="<?php echo ($pagina <= $por_pagina) ? '?p='.$pagina  :''; ?>"     >Próximo</a></li>	
-			   
-			  </ul>
-			</nav>
-	
+			<?php if($total_reg > $por_pagina): ?>
+
+				<nav aria-label="Page navigation example">
+				  <ul class="pagination pagination-lg justify-content-center bg-dark">
+
+	             
+				    <li class="page-item"><a class="page-link bg-dark text-light"  <?php if(isset($_GET['p']) && !empty($_GET['p'])){$pagina = addslashes($_GET['p']) -1; ?> href="<?php echo ($pagina >= 1) ? '?p='.$pagina  :''; ?>"   <?php } ?>  >Anterior</a></li>			
+	                
+	                <?php for($i = 1; $i <= $por_pagina; $i++): ?>
+	                	<?php if($i <= 6):?>
+				        <li class="page-item"><a class="page-link bg-dark text-light" href="<?php echo BASE_URL; ?>?p=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+				         <?php endif; ?>
+				    <?php endfor; ?>   
+	             
+	                <li class="page-item"><a class="page-link bg-dark text-light"  <?php if(isset($_GET['p']) && !empty($_GET['p']) && $_GET['p']){$pagina = addslashes($_GET['p']) +1; } else { $pagina = '2'; } ?> href="<?php echo ($pagina <= $por_pagina) ? '?p='.$pagina  :''; ?>"     >Próximo</a></li>	
+				   
+				  </ul>
+			    </nav>	
+
+			<?php endif; ?>				
+			
 	</div>
 <?php endif; ?>
 

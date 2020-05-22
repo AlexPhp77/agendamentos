@@ -41,7 +41,7 @@ class Reservas extends Conexao{
 	}
 
 	public function verificarDisponibilidade($horario){
-			
+
 		$sql = $this->pdo->prepare("SELECT * FROM reserva WHERE 
 			(NOT (data_inicio > :data_fim OR data_fim < :data_inicio))");
 		$sql->bindValue(':data_inicio', $horario);		
@@ -62,10 +62,12 @@ class Reservas extends Conexao{
 		$sql = $this->pdo->prepare("INSERT reserva SET data_inicio = :data_inicio, data_fim = :data_fim, id_usuario = :id_usuario");
 		$sql->bindValue(':id_usuario', $id);
 		$sql->bindValue(':data_inicio', $data_inicio);		
-		$sql->bindValue(':data_fim', date('Y-m-d H:i', strtotime($data_inicio.'+1 hours')));
-		$sql->execute();
+		$sql->bindValue(':data_fim', date('Y-m-d H:i', strtotime($data_inicio.'+59 minutes')));
+		$sql->execute();	
 
-		return true; 
+		?>
+        <script type="text/javascript">document.location.reload(true);</script>
+		<?php
 		
 		} 
 	}
