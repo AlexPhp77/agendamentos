@@ -48,6 +48,7 @@ class pacienteController extends controller{
         
         $msg = '';
         $msg2 = '';
+        $msg3 = '';
 		if(isset($_POST['data']) && !empty($_POST['data'])){
 		   
             $data = addslashes($_POST['data']);
@@ -62,15 +63,16 @@ class pacienteController extends controller{
 			
 			print_r($data_inicio);                
            
-			if($data_inicio >= $data_atual){
-				$r->addReservas($id, $data_inicio);
+			if($data_inicio >= $data_atual){				
 
 				if($false = $r->verificarDisponibilidade($data_inicio) == false){
-			    $msg2 = "Já existe consulta marcada para esse horário!";
-			    } else{
-			    	$msg2 = "Consulta marcada com sucesso!";
-			    }
-			    
+			        $msg2 = "Já existe consulta marcada para esse horário!";
+			    } 
+
+			    if($r->addReservas($id, $data_inicio) == true){
+					$msg3 = "Consulta marcada com sucesso!";
+				}
+
 			} else{
 				$msg = "Hora inválida!";
 			}
@@ -91,7 +93,8 @@ class pacienteController extends controller{
 			'numero' => $dado['numero'],
 			'aviso' => $aviso,	
 			'm' => $msg,	
-			'm2'=> $msg2		
+			'm2'=> $msg2,
+			'm3' => $msg3		
 			
 		    );
         }	                

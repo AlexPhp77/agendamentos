@@ -65,6 +65,8 @@ class Reservas extends Conexao{
 		$sql->bindValue(':data_fim', date('Y-m-d H:i', strtotime($data_inicio.'+59 minutes')));
 		$sql->execute();	
 
+		return true; 
+
 		?>
         <script type="text/javascript">document.location.reload(true);</script>
 		<?php
@@ -74,7 +76,7 @@ class Reservas extends Conexao{
 
 	public function temReserva($id){
 
-		$sql = $this->pdo->prepare("SELECT * FROM reserva WHERE id_usuario = :id");
+		$sql = $this->pdo->prepare("SELECT * FROM reserva WHERE id_usuario = :id ORDER BY data_inicio ASC");
 		$sql->bindValue(':id', $id);
 		$sql->execute(); 
 

@@ -114,7 +114,12 @@ if(!isset($_SESSION['logado']) && empty($_SESSION['logado'])){
     <div class="alert alert-danger" style="margin-top: 10px;">
       <?php echo $m2; ?>
     </div>  
-  <?php endif; ?>  
+  <?php endif; ?> 
+  <?php if(!empty($m3)): ?>  
+    <div class="alert alert-success" style="margin-top: 10px;">
+      <?php echo $m3; ?>
+    </div>  
+  <?php endif; ?>   
 
   <div class="aviso-delete">
   
