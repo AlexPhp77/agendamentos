@@ -15,6 +15,11 @@ class loginController extends controller{
 
 			$m = $u->login($email, $senha);	
 
+			if($m == false){
+				$m = "E-mail e/ou senha errados!";
+				
+			}
+
 			$dados = array(
 			    'm' => $m
 		    ); 			   

@@ -1,4 +1,11 @@
 <?php 
+
+if(!isset($_SESSION['logado']) && empty($_SESSION['logado'])){
+	?>
+    <script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>./";</script>
+	<?php 
+}
+
 /*Verifica quantos dias há em um mês*/
 $numero = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')); 
 

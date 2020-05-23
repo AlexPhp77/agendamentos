@@ -28,9 +28,12 @@
 			     <th scope="col">E-MAIL</th>
 			     <th scope="col">TELEFONE</th>
               </thead>
+
 			  <?php foreach($lista as $chave => $usuario):  ?>
 			    <tr>
-			      <th scope="row"><?php echo next($usuario) - 1; ?></th>			    
+			     
+			      <th scope="row"><?php echo $chave + 1; ?></th>	
+			         		    
 			      	<td>
 			      	<a class="text-light" href="<?php echo BASE_URL; ?>paciente/?id=<?php echo $usuario['id'] ?>">
 			      		<?php echo $usuario['nome']?></td>

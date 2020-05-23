@@ -70,7 +70,7 @@ class pacienteController extends controller{
 			    } 
 
 			    if($r->addReservas($id, $data_inicio) == true){
-					$msg3 = "Consulta marcada com sucesso!";
+					$msg3 = "Consulta marcada com sucesso!";					
 				}
 
 			} else{

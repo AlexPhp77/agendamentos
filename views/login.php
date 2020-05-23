@@ -7,7 +7,11 @@
     
 <div class="container">
   <form method="POST">
-  <?php if(!empty($m)){ echo $m;} ?>
+  <?php if(!empty($m)): ?>  
+    <div class="alert alert-warning" style="margin-top: 10px;">
+      <?php echo $m; ?>
+    </div>   
+  <?php endif; ?>
   <div class="form-group">
     <label for="email">E-mail</label>
     <input type="text" name="email" class="form-control form-control-lg" id="email" placeholder="Digite o e-mail cadastrado">

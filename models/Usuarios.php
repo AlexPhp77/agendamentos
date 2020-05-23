@@ -29,7 +29,13 @@ class Usuarios extends Conexao{
     	$this->setRua($rua);
     	$this->setNumero($numero);
 
-    	$this->cadastrar();
+    	if($this->cadastrar()==true){
+    		return true; 
+    	} else{
+    		return false;
+    	}
+
+
     	
     }
     public function infoAllEditar($nomecompleto, $idade, $cpf, $email, $telefone, $estado, $cidade, $cep, $rua, $numero, $id){
@@ -89,7 +95,7 @@ class Usuarios extends Conexao{
 	private function setNumero($numero){
 		$this->numero = $numero;
 	}
-	private function verificarEmail(){	
+	public function verificarEmail(){	
 
     	$sql = "SELECT * FROM usuarios WHERE email = :email";
     	$sql = $this->pdo->prepare($sql);
@@ -143,7 +149,7 @@ class Usuarios extends Conexao{
 	    	$sql->execute();   
 
 	    	return true;     	  
-    	}  	
+    	} 
 	}
 	private function editarPaciente(){
 
@@ -181,8 +187,7 @@ class Usuarios extends Conexao{
         	<script type="text/javascript">window.location.href="./";</script>
         	<?php  
 		} else{
-			$m = "<div class='alert alert-warning' role='alert'>E-mail e/ou senha errados!</div>";
-			return $m; 		     
+			return false;   		     
 	    }		     
 	} 
 	public function qtUsuarios(){
