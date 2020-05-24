@@ -25,21 +25,25 @@ class cadastroController extends controller{
 			$numero = addslashes($_POST['numero']);
             
             $m = '';
-            $m2 = '';
-            $m3 = '';
-
+            $m2 = '';  
            					
 			$m = $u->infoAllCadastrar($nomecompleto, $idade, $cpf, $email, $telefone, $senha, $estado, $cidade, $cep, $rua, $numero);	
 
+			
 			if($m == true){
 				$m = "Cadastrado com sucesso!";				
 			} else {
 				$m2 = "Erro!";
 			}
 
-			$m3 = $u->verificarEmail();		    
+			$m3 = $u->verificarEmail();		
+
+
+			  
 		    if($m3 == false && $m == false){
 		        $m3 = "Esse e-mail já está sendo usado!";		       
+		    } else{
+		    	$m3 = '';
 		    }
 
             $dados = array(

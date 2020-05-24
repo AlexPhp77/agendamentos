@@ -72,8 +72,8 @@ class Usuarios extends Conexao{
 		if(filter_var($email, FILTER_VALIDATE_EMAIL)){
 			$this->email = $email; 
 		} 
-	}private function setFone($telefone){
-		$this->telefone = $telefone;
+	}private function setFone($telefone){		
+		$this->telefone = $telefone; 		 	
 	}
 	private function setSenha($senha){
 		if(strlen($senha) >= 8){
@@ -84,7 +84,9 @@ class Usuarios extends Conexao{
 		$this->estado = $estado;
 	}
 	private function setCidade($cidade){
-		$this->cidade = $cidade;
+		if($cidade = filter_var($cidade, FILTER_SANITIZE_STRING)){
+			$this->cidade = $cidade; 
+		} 
 	}
 	private function setCep($cep){
 		$this->cep = $cep;
@@ -93,7 +95,9 @@ class Usuarios extends Conexao{
 		$this->rua = $rua;
 	}
 	private function setNumero($numero){
-		$this->numero = $numero;
+		if(filter_var($numero, FILTER_VALIDATE_INT)){
+			$this->numero = $numero; 
+		} 	
 	}
 	public function verificarEmail(){	
 
@@ -126,25 +130,25 @@ class Usuarios extends Conexao{
 
     	if($this->verificarEmail()){
 
-	    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = :nome, idade = :idade, cpf = :cpf, email = :email, telefone = :telefone, senha = :senha");
-	    	$sql->bindValue(':nome', $this->nomecompleto);    	
+	    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = trim(:senha)");
+	    	$sql->bindValue(':nome', str_replace('  ', '', $this->nomecompleto));    	
 	    	$sql->bindValue(':idade', $this->idade);
-	    	$sql->bindValue(':cpf', $this->cpf);
-	    	$sql->bindValue(':email', $this->email);
-	    	$sql->bindValue(':telefone', $this->telefone);
-	    	$sql->bindValue(':senha', $this->senha);
+	    	$sql->bindValue(':cpf',  str_replace(' ', '', $this->cpf));  
+	    	$sql->bindValue(':email', $this->email);   	
+	    	$sql->bindValue(':telefone', str_replace(' ', '', $this->telefone));
+	    	$sql->bindValue(':senha',str_replace(' ', '', $this->senha));
 	    	$sql->execute();
 	        
 	        /* Id da primeira inserção 
 	        Tabela endereço terá o id do usuário inserido*/
 	    	$id = $this->pdo->lastInsertId();
 
-	    	$sql = $this->pdo->prepare("INSERT INTO endereco SET id_usuario = :id_usuario, estado = :estado, cidade = :cidade, cep = :cep, rua = :rua, numero = :numero"); 
+	    	$sql = $this->pdo->prepare("INSERT INTO endereco SET id_usuario = :id_usuario, estado = trim(:estado), cidade = trim(:cidade), cep = trim(:cep), rua = trim(:rua), numero = trim(:numero)"); 
 	    	$sql->bindValue(':id_usuario', $id);
-	    	$sql->bindValue(':estado', $this->estado);
-	    	$sql->bindValue(':cidade', $this->cidade);
-	    	$sql->bindValue(':cep', $this->cep);
-	    	$sql->bindValue(':rua', $this->rua);
+	    	$sql->bindValue(':estado',  str_replace('  ', '', $this->estado)); 
+	    	$sql->bindValue(':cidade', str_replace('  ', '', $this->cidade)); 
+	    	$sql->bindValue(':cep', str_replace(' ', '', $this->cep)); 
+	    	$sql->bindValue(':rua', str_replace('  ', '', $this->rua)); 
 	    	$sql->bindValue(':numero', $this->numero);
 	    	$sql->execute();   
 
@@ -153,21 +157,21 @@ class Usuarios extends Conexao{
 	}
 	private function editarPaciente(){
 
-		$sql = $this->pdo->prepare("UPDATE usuarios SET nome = :nome, idade = :idade, cpf = :cpf, email = :email, telefone = :telefone WHERE id = :id");
-    	$sql->bindValue(':nome', $this->nomecompleto);    	
+		$sql = $this->pdo->prepare("UPDATE usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone) WHERE id = trim(:id)");
+    	$sql->bindValue(':nome', str_replace('  ', '', $this->nomecompleto));    	
     	$sql->bindValue(':idade', $this->idade);
-    	$sql->bindValue(':cpf', $this->cpf);  
+    	$sql->bindValue(':cpf',  str_replace(' ', '', $this->cpf));  
     	$sql->bindValue(':email', $this->email);   	
-    	$sql->bindValue(':telefone', $this->telefone);
+    	$sql->bindValue(':telefone', str_replace(' ', '', $this->telefone));
     	$sql->bindValue(':id', $this->id);    	
     	$sql->execute(); 
 
-    	$sql = $this->pdo->prepare("UPDATE endereco SET estado = :estado, cidade = :cidade, cep = :cep, rua = :rua, numero = :numero WHERE id_usuario = :id"); 
+    	$sql = $this->pdo->prepare("UPDATE endereco SET estado = trim(:estado), cidade = trim(:cidade), cep = trim(:cep), rua = trim(:rua), numero = trim(:numero) WHERE id_usuario = trim(:id)"); 
     	$sql->bindValue(':id', $this->id);
-    	$sql->bindValue(':estado', $this->estado);
-    	$sql->bindValue(':cidade', $this->cidade);
-    	$sql->bindValue(':cep', $this->cep);
-    	$sql->bindValue(':rua', $this->rua);
+    	$sql->bindValue(':estado',  str_replace('  ', '', $this->estado)); 
+    	$sql->bindValue(':cidade',  str_replace('  ', '', $this->cidade)); 
+    	$sql->bindValue(':cep', str_replace(' ', '', $this->cep)); 
+    	$sql->bindValue(':rua', str_replace('  ', '', $this->rua)); 
     	$sql->bindValue(':numero', $this->numero);    	 
     	$sql->execute();
 
@@ -201,7 +205,7 @@ class Usuarios extends Conexao{
 	public function getUsuarios($inicio, $total_reg){		 
 
         $dados = array();
-		$sql = $this->pdo->query("SELECT id, nome, cpf, email, telefone, permissoes FROM usuarios LIMIT $inicio , $total_reg");        
+		$sql = $this->pdo->query("SELECT id, nome, cpf, email, telefone, permissoes FROM usuarios ORDER BY nome ASC LIMIT $inicio , $total_reg");        
         if($sql->rowCount() > 0){
         	return $dados = $sql->fetchAll();
         } return $dados; 
