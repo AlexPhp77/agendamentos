@@ -76,7 +76,7 @@ class Usuarios extends Conexao{
 		$this->telefone = $telefone;
 	}
 	private function setSenha($senha){
-		if($senha >= 8){
+		if(strlen($senha) >= 8){
 			$this->senha = $senha;             		
 		} 
 	}

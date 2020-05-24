@@ -9,16 +9,24 @@ class homeController extends controller{
         $u = new Usuarios();               
 
         /*Paginação*/
-        $inicio = 0;
-        $btn = 3;
+        $inicio = 0; 
+        $btn = 1;       
 
-        $total_reg = $u->qtUsuarios();       
-        
-        if($total_reg > $btn){
-        	$por_pagina = ceil($total_reg / $btn); 
+        $total_reg = $u->qtUsuarios(); 
+       
+        if($total_reg >= 20){
+        	$por_pagina = ceil($total_reg / 2); 
+        } elseif ($total_reg >= 50) {
+        	$por_pagina = ceil($total_reg / 5);         	
+        } elseif ($total_reg >= 100) {
+        	$por_pagina = ceil($total_reg / 10);         	
+        } elseif ($total_reg >= 500) {
+        	$por_pagina = ceil($total_reg / 50);         	
+        } elseif ($total_reg >= 1000) {
+        	$por_pagina = ceil($total_reg / 100);         	
         } else{
-        	$por_pagina = 4;
-        }
+        	$por_pagina = ceil($total_reg / $btn);   
+        }        
 
         if(isset($_GET['p']) && !empty($_GET['p'])){
         	$inicio = addslashes($_GET['p']);
@@ -33,7 +41,8 @@ class homeController extends controller{
 			'lista' => $lista,
 			'por_pagina' => $btn,
 			'total_reg' => $total_reg,
-			'permissao' => $permissao
+			'permissao' => $permissao,
+			'btn' => $btn
 			
 		);
        

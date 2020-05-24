@@ -10,7 +10,8 @@
 			  <thead>
 			    <tr>
 			      <th style="font-size: 14px">
-			      	<?php echo $total_reg; ?> pacientes cadastrados  
+			      	<?php echo $total_reg; ?> pacientes cadastrados<br/> 
+			      	<?php echo count($lista); ?> por página
 			      </th>	
 			      <th scope="col" colspan="5">
 			      	<form method="POST" class="form-inline my-2 my-lg-0 flex-row-reverse">			      		
@@ -30,10 +31,8 @@
               </thead>
 
 			  <?php foreach($lista as $chave => $usuario):  ?>
-			    <tr>
-			     
+			    <tr>			     
 			      <th scope="row"><?php echo $chave + 1; ?></th>	
-			         		    
 			      	<td>
 			      	<a class="text-light" href="<?php echo BASE_URL; ?>paciente/?id=<?php echo $usuario['id'] ?>">
 			      		<?php echo $usuario['nome']?></td>
@@ -47,7 +46,7 @@
 			  </tbody>
 			</table>	
 
-			<?php if($total_reg > $por_pagina): ?>
+			<?php if($total_reg >= $btn && $total_reg >= 10): ?>
 
 				<nav aria-label="Page navigation example">
 				  <ul class="pagination pagination-lg justify-content-center bg-dark">
