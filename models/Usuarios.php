@@ -60,7 +60,9 @@ class Usuarios extends Conexao{
     }  
     //Obs: Preciso filtrar antes de setar
 	private function setNome($nomecompleto){
-		$this->nomecompleto = $nomecompleto;
+		if($nomecompleto = filter_var($nomecompleto, FILTER_SANITIZE_STRING)){
+			$this->nomecompleto = $nomecompleto; 
+		} 
 	}
 	private function setIdade($idade){
 		$this->idade = $idade;
@@ -70,8 +72,8 @@ class Usuarios extends Conexao{
 	}
 	public function setEmail($email){
 		if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-			$this->email = $email; 
-			return true;
+			$this->email = $email;
+			return true;  
 		} else{
 			return false; 
 		}
@@ -103,6 +105,7 @@ class Usuarios extends Conexao{
 	private function setNumero($numero){
 		if(filter_var($numero, FILTER_VALIDATE_INT)){
 			$this->numero = $numero; 
+			return true; 
 		} 	
 	}
 	public function verificarEmail(){	
@@ -134,10 +137,7 @@ class Usuarios extends Conexao{
     }    
     private function cadastrar(){    	
 
-    	if($this->verificarEmail() && $this->setSenha($this->senha &&  $this->setEmail($this->email))){
-    		$id = '';
-
-    		if($id > 0){
+    	if($this->verificarEmail() && $this->setSenha($this->senha) && $this->setNumero($this->numero)){
 
 	    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = trim(:senha)");
 	    	$sql->bindValue(':nome', str_replace('  ', '', $this->nomecompleto));    	
@@ -150,7 +150,9 @@ class Usuarios extends Conexao{
 	        
 	        /* Id da primeira inserção 
 	        Tabela endereço terá o id do usuário inserido*/
-	    	$id = $this->pdo->lastInsertId();	    	
+	    	$id = $this->pdo->lastInsertId();
+
+	    	if($id > 0){
 
 		    	$sql = $this->pdo->prepare("INSERT INTO endereco SET id_usuario = :id_usuario, estado = trim(:estado), cidade = trim(:cidade), cep = trim(:cep), rua = trim(:rua), numero = trim(:numero)"); 
 		    	$sql->bindValue(':id_usuario', $id);

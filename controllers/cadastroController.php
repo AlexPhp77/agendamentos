@@ -47,7 +47,7 @@ class cadastroController extends controller{
             }
 
             $m5 = $u->setEmail($email);
-           
+
             if($m5 == false){
             	$m5 = "Digite um e-mail válido!";
             } else{
@@ -64,7 +64,8 @@ class cadastroController extends controller{
 		       'm' => $m,
 		       'm2' => $m2,
 		       'm3' => $m3,
-		       'm4'	=> $m4     
+		       'm4'	=> $m4,
+		       'm5' => $m5     
 		    );
 		}	
          
