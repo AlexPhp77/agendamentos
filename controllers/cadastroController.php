@@ -38,7 +38,21 @@ class cadastroController extends controller{
 
 			$m3 = $u->verificarEmail();		
 
+            $m4 = $u->setSenha($senha);
 
+            if($m4 == false){
+            	$m4 = "Sua senha deve ter 8 ou mais caracteres!";
+            } else{
+            	$m4 = '';
+            }
+
+            $m5 = $u->setEmail($email);
+           
+            if($m5 == false){
+            	$m5 = "Digite um e-mail válido!";
+            } else{
+            	$m5 = '';
+            }
 			  
 		    if($m3 == false && $m == false){
 		        $m3 = "Esse e-mail já está sendo usado!";		       
@@ -49,7 +63,8 @@ class cadastroController extends controller{
             $dados = array(
 		       'm' => $m,
 		       'm2' => $m2,
-		       'm3' => $m3		     
+		       'm3' => $m3,
+		       'm4'	=> $m4     
 		    );
 		}	
          

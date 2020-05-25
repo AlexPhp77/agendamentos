@@ -20,6 +20,16 @@
       <?php echo $m3; ?>
     </div>
   <?php endif; ?>
+  <?php if(!empty($m4)): ?>
+     <div class="alert alert-warning" style="margin-top: 10px;">
+      <?php echo $m4; ?>
+    </div>
+  <?php endif; ?>
+  <?php if(!empty($m5)):?>
+     <div class="alert alert-warning" style="margin-top: 10px;">
+      <?php echo $m5; ?>
+    </div>
+  <?php endif; ?>
   <form method="POST">  
   <div class="form-row">
     <div class="col-md-6">

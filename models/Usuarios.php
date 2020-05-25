@@ -68,17 +68,23 @@ class Usuarios extends Conexao{
 	private function setCpf($cpf){
 		$this->cpf = $cpf;
 	}
-	private function setEmail($email){
+	public function setEmail($email){
 		if(filter_var($email, FILTER_VALIDATE_EMAIL)){
 			$this->email = $email; 
-		} 
+			return true;
+		} else{
+			return false; 
+		}
 	}private function setFone($telefone){		
 		$this->telefone = $telefone; 		 	
 	}
-	private function setSenha($senha){
+	public function setSenha($senha){
 		if(strlen($senha) >= 8){
-			$this->senha = $senha;             		
-		} 
+			$this->senha = $senha; 
+			return true;             		
+		} else{
+			return false;
+		}
 	}
 	private function setEstado($estado){
 		$this->estado = $estado;
@@ -128,7 +134,10 @@ class Usuarios extends Conexao{
     }    
     private function cadastrar(){    	
 
-    	if($this->verificarEmail()){
+    	if($this->verificarEmail() && $this->setSenha($this->senha &&  $this->setEmail($this->email))){
+    		$id = '';
+
+    		if($id > 0){
 
 	    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = trim(:senha)");
 	    	$sql->bindValue(':nome', str_replace('  ', '', $this->nomecompleto));    	
@@ -136,23 +145,24 @@ class Usuarios extends Conexao{
 	    	$sql->bindValue(':cpf',  str_replace(' ', '', $this->cpf));  
 	    	$sql->bindValue(':email', $this->email);   	
 	    	$sql->bindValue(':telefone', str_replace(' ', '', $this->telefone));
-	    	$sql->bindValue(':senha',str_replace(' ', '', $this->senha));
+	    	$sql->bindValue(':senha', $this->senha);
 	    	$sql->execute();
 	        
 	        /* Id da primeira inserção 
 	        Tabela endereço terá o id do usuário inserido*/
-	    	$id = $this->pdo->lastInsertId();
+	    	$id = $this->pdo->lastInsertId();	    	
 
-	    	$sql = $this->pdo->prepare("INSERT INTO endereco SET id_usuario = :id_usuario, estado = trim(:estado), cidade = trim(:cidade), cep = trim(:cep), rua = trim(:rua), numero = trim(:numero)"); 
-	    	$sql->bindValue(':id_usuario', $id);
-	    	$sql->bindValue(':estado',  str_replace('  ', '', $this->estado)); 
-	    	$sql->bindValue(':cidade', str_replace('  ', '', $this->cidade)); 
-	    	$sql->bindValue(':cep', str_replace(' ', '', $this->cep)); 
-	    	$sql->bindValue(':rua', str_replace('  ', '', $this->rua)); 
-	    	$sql->bindValue(':numero', $this->numero);
-	    	$sql->execute();   
+		    	$sql = $this->pdo->prepare("INSERT INTO endereco SET id_usuario = :id_usuario, estado = trim(:estado), cidade = trim(:cidade), cep = trim(:cep), rua = trim(:rua), numero = trim(:numero)"); 
+		    	$sql->bindValue(':id_usuario', $id);
+		    	$sql->bindValue(':estado',  str_replace('  ', '', $this->estado)); 
+		    	$sql->bindValue(':cidade', str_replace('  ', '', $this->cidade)); 
+		    	$sql->bindValue(':cep', str_replace(' ', '', $this->cep)); 
+		    	$sql->bindValue(':rua', str_replace('  ', '', $this->rua)); 
+		    	$sql->bindValue(':numero', $this->numero);
+		    	$sql->execute();   
 
-	    	return true;     	  
+		    	return true;   
+	    	}  	  
     	} 
 	}
 	private function editarPaciente(){
