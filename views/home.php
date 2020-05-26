@@ -3,9 +3,29 @@
 
 <?php if(isset($_SESSION['logado']) && !empty($_SESSION['logado']) && $permissao['permissoes'] == 'ADMINISTRADOR'): ?>
 	<div class="container">  
+		    <hr/>
 		    <div>
 		    	<?php echo "Área restrita ( ".$permissao['permissoes']." )";  ?>
 		    </div>
+		    <hr/>
+		    <?php foreach($avisos as $aviso): ?>
+			<div class="container">
+				<div class="alert alert-primary alert-dismissible fade show row" role="alert">
+					<div class="col-sm">
+				        <?php echo "PACIENTE: </br>".$aviso['nome']; ?> 
+				    </div>
+				    <div class="col-sm">
+				    	<?php echo "TELEFONE: </br>".$aviso['telefone']; ?>
+				    </div>
+				    <div class="col-sm">
+				    	<?php echo "DIA E HORÁRIO DA CONSULTA: ".$aviso['data_inicio']." às ".date('H:i', strtotime($aviso['data_fim'])); ?>
+				    </div>				   
+				    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					</button>	    
+			    </div>
+			</div>
+		    <?php endforeach; ?>		   
 			<table class="table table-dark table-hover table-responsive-lg ">
 			  <thead>
 			    <tr>

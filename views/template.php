@@ -8,7 +8,7 @@
 </head>
 <body>    
     
-      <header>
+      <header style="font-size: 18px;">
         <div class="container-fluid">
           <nav class="navbar navbar-dark bg-info fixed-top navbar-expand-lg">
               <a class="navbar-brand" href="<?php echo BASE_URL; ?>./">SUAMARCA</a>
@@ -47,6 +47,7 @@
     
   	<script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/jquery.mask.js"></script>
     <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script.js"></script>
 </body>
 </html>

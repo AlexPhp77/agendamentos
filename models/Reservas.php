@@ -91,4 +91,22 @@ class Reservas extends Conexao{
 			return false; 
 		}
 	}
+
+	public function avisoConsultas(){
+		$dados = array();
+
+		date_default_timezone_set('America/Sao_Paulo');	
+		$data_atual = date('Y-m-d H:i');			
+
+		$sql = $this->pdo->prepare("SELECT reserva.id, reserva.id_usuario, reserva.data_inicio, reserva.data_fim, usuarios.nome, usuarios.telefone FROM reserva  INNER JOIN usuarios ON reserva.id_usuario = usuarios.id WHERE (NOT (data_inicio > :data_atual)) ORDER BY reserva.data_inicio ASC");
+		$sql->bindValue(':data_atual', date('Y-m-d H:i', strtotime($data_atual.'+1 day')));
+		$sql->execute();
+		
+		if($sql->rowCount() > 0 ){
+			return $dados = $sql->fetchAll();
+
+		} else{
+			return false; 
+		}
+	}
 }

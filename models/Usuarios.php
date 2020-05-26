@@ -59,7 +59,7 @@ class Usuarios extends Conexao{
     	$this->id = $id;
     }  
     //Obs: Preciso filtrar antes de setar
-	private function setNome($nomecompleto){
+	private function setNome($nomecompleto){		
 		if($nomecompleto = filter_var($nomecompleto, FILTER_SANITIZE_STRING)){
 			$this->nomecompleto = $nomecompleto; 
 		} 
@@ -139,7 +139,7 @@ class Usuarios extends Conexao{
 
     	if($this->verificarEmail() && $this->setSenha($this->senha) && $this->setNumero($this->numero)){
 
-	    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = trim(:senha)");
+	    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = trim(:senha)");	    	
 	    	$sql->bindValue(':nome', str_replace('  ', '', $this->nomecompleto));    	
 	    	$sql->bindValue(':idade', $this->idade);
 	    	$sql->bindValue(':cpf',  str_replace(' ', '', $this->cpf));  

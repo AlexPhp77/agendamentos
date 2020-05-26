@@ -6,7 +6,8 @@ class homeController extends controller{
 		
 		$dados = array();	
         
-        $u = new Usuarios();               
+        $u = new Usuarios();   
+        $r = new Reservas();             
 
         /*Paginação*/
         $inicio = 0; 
@@ -37,16 +38,19 @@ class homeController extends controller{
 
 		$permissao = $u->permissoes(); 
 
+                $aviso_reservas = $r->avisoConsultas();       
+
 		$dados = array(
 			'lista' => $lista,
 			'por_pagina' => $btn,
 			'total_reg' => $total_reg,
 			'permissao' => $permissao,
-			'btn' => $btn
+			'btn' => $btn,
+                        'avisos' => $aviso_reservas
 			
 		);
-       
-		$this->loadTemplate('home', $dados);
+
+                $this->loadTemplate('home', $dados);
 	}
 		
 }
