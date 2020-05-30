@@ -21,9 +21,11 @@ class Reservas extends Conexao{
     	$sql = $this->pdo->prepare('DELETE FROM reserva WHERE id_usuario = :id_usuario AND id = :id');    	
     	$sql->bindValue(':id', $id_reserva);
     	$sql->bindValue(':id_usuario', $id);
-    	$sql->execute();  
+    	$sql->execute();
 
-    	return true; 
+    	?>
+        <script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>usuario"</script>
+    	<?php
     }
 
 	public function pesquisar($texto){
@@ -98,15 +100,36 @@ class Reservas extends Conexao{
 		date_default_timezone_set('America/Sao_Paulo');	
 		$data_atual = date('Y-m-d H:i');			
 
-		$sql = $this->pdo->prepare("SELECT reserva.id, reserva.id_usuario, reserva.data_inicio, reserva.data_fim, usuarios.nome, usuarios.telefone FROM reserva  INNER JOIN usuarios ON reserva.id_usuario = usuarios.id WHERE (NOT (data_inicio > :data_atual)) ORDER BY reserva.data_inicio ASC");
-		$sql->bindValue(':data_atual', date('Y-m-d H:i', strtotime($data_atual.'+1 day')));
+		$sql = $this->pdo->prepare("SELECT reserva.id, reserva.id_usuario, reserva.data_inicio, reserva.data_fim, reserva.confirmado, usuarios.nome, usuarios.telefone FROM reserva  INNER JOIN usuarios ON reserva.id_usuario = usuarios.id WHERE (NOT (data_inicio > :data_atual)) ORDER BY reserva.data_inicio ASC");
+		$sql->bindValue(':data_atual', date('Y-m-d H:i', strtotime($data_atual.'+1 day +4 hours')));
 		$sql->execute();
 		
 		if($sql->rowCount() > 0 ){
 			return $dados = $sql->fetchAll();
 
 		} else{
-			return false; 
+			return $dados; 
 		}
+	}
+
+	public function deletarHorarios(){
+
+		date_default_timezone_set('America/Sao_Paulo');	
+		$data_atual = date('Y-m-d H:i');
+
+		$sql = $this->pdo->query("DELETE FROM reserva WHERE data_inicio < '$data_atual'"); 
+
+    	return true; 
+	}
+
+	public function confirmarReserva($id_reserva, $id_usuario, $btn_confirmar){
+
+		$sql = $this->pdo->prepare("UPDATE reserva SET confirmado = :btn_confirmar WHERE id_usuario = :id_usuario AND id = :id_reserva");
+		$sql->bindValue(':btn_confirmar', $btn_confirmar);
+		$sql->bindValue(':id_reserva', $id_reserva);
+		$sql->bindValue(':id_usuario', $id_usuario);
+		$sql->execute(); 
+
+		return true; 
 	}
 }

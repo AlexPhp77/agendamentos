@@ -131,7 +131,8 @@ class Usuarios extends Conexao{
 	        $sql->execute();        
 
 	        if($sql->rowCount() > 0){
-	            return $dado = $sql->fetch(); 
+	            return $dado = $sql->fetch();
+
 	        }
         }
     }    
@@ -200,7 +201,7 @@ class Usuarios extends Conexao{
 			$dado = $sql->fetch();
 			$_SESSION['logado'] = $dado['id'];
 			?>
-        	<script type="text/javascript">window.location.href="./";</script>
+        	<script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>usuario";</script>
         	<?php  
 		} else{
 			return false;   		     
@@ -225,14 +226,42 @@ class Usuarios extends Conexao{
 
 	public function deletar($id){
 
-    	$sql = $this->pdo->prepare('DELETE FROM usuarios WHERE id = :id');
-    	$sql->bindValue(':id', $id);
-    	$sql->execute();
+        $dados = $this->permissoes(); 
+
+		if($dados['permissoes'] == 'ADMINISTRADOR'){		
+
+	    	$sql = $this->pdo->prepare('DELETE FROM reserva WHERE id_usuario = :id');
+	    	$sql->bindValue(':id', $id);
+	    	$sql->execute();
+
+	    	$sql = $this->pdo->prepare('DELETE FROM endereco WHERE id_usuario = :id');
+	    	$sql->bindValue(':id', $id);
+	    	$sql->execute();
+
+	    	$sql = $this->pdo->prepare('DELETE FROM usuarios WHERE id = :id');
+	    	$sql->bindValue(':id', $id);
+	    	$sql->execute();
+
+        } else{
+
+        	$sql = $this->pdo->prepare('DELETE usuarios, endereco FROM usuarios INNER JOIN endereco ON endereco.id_usuario = usuarios.id WHERE usuarios.id = :id_logado');
+        	if(isset($_SESSION['logado'])){
+	    	    $sql->bindValue(':id_logado', $_SESSION['logado']);
+	    	    $sql->execute();
+	        }        	
+
+        	$sql = $this->pdo->prepare('DELETE FROM reserva WHERE id_usuario = :id_logado');
+        	if(isset($_SESSION['logado'])){
+	    	    $sql->bindValue(':id_logado', $_SESSION['logado']);
+	    	    $sql->execute();
+	        }
+	    	
+        }
 
     	?>
     	<script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>./"</script>
     	<?php
-    }
+    }  
 
 	public function pesquisar($texto){
 		$dados = array(); 

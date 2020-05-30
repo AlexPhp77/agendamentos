@@ -11,18 +11,6 @@ $(function(){
 				$('.teste').html(html);
 			}
 		});	
-	});
-
-	$('#marcar').on('click', function(){		
-        
-		$.ajax({
-			url:'http://localhost/sistemas/agendamentos/reservar',
-			type:'POST',
-			data:{},
-			success:function(html){
-				$('.reservar').html(html);
-			}
-		});	
 	});	
 
 	$('#cep').mask('00000-000');

@@ -29,6 +29,10 @@ footer{
 	background-color:#17a2b8;
 
 }
+.reservar{
+  display: none;
+}
+
 @media (max-width: 700px){
   footer{    
     display: none;

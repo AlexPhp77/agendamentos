@@ -7,7 +7,18 @@ class homeController extends controller{
 		$dados = array();	
         
         $u = new Usuarios();   
-        $r = new Reservas();             
+        $r = new Reservas(); 
+
+        $r->deletarHorarios();      
+
+        if(isset($_POST['id_reserva']) && !empty($_POST['id_reserva'])){
+
+                $id_usuario = addslashes($_POST['id_usuario']);
+                $id_reserva = addslashes($_POST['id_reserva']);
+                $btn_confirmar = addslashes($_POST['btn_confirmar']);
+
+                $r->confirmarReserva($id_reserva, $id_usuario, $btn_confirmar);     
+        }
 
         /*Paginação*/
         $inicio = 0; 
@@ -38,7 +49,7 @@ class homeController extends controller{
 
 		$permissao = $u->permissoes(); 
 
-                $aviso_reservas = $r->avisoConsultas();       
+                $aviso_reservas = $r->avisoConsultas(); 
 
 		$dados = array(
 			'lista' => $lista,

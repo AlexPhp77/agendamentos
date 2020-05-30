@@ -1,11 +1,16 @@
 <?php
-
-if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['permissoes'] != 'ADMINISTRADOR'){
+if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR empty($dados)){
   unset($_SESSION['logado']);
   ?>
   <script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>./"</script>
   <?php
   exit;  
+}
+
+if($permissoes == 'ADMINISTRADOR'){ /*Administrador não acessa a página usuário*/
+  ?>
+    <script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>./";</script>
+  <?php 
 }
 
   /*Verifica quantos dias há em um mês*/
@@ -20,25 +25,35 @@ if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['perm
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">DELETAR DADOS DO PACIENTE</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">DELETAR MINHA CONTA</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          Tem certeza que deseja excluir esse usuário? 
+          Tem certeza que deseja deletar sua conta?
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-info" data-dismiss="modal">CANCELAR</button>
-            <?php if(isset($_GET['id'])){ $id = addslashes($_GET['id']);} ?>
-            <a href="<?php echo BASE_URL; ?>paciente/deletar/?id_usuario=<?php echo $id; ?>">
+           
+            <a href="<?php echo BASE_URL; ?>paciente/deletar/?id_usuario=<?php echo $_SESSION['logado']; ?>">
             <button style="float: right; margin-left: 10px;" class="btn btn-danger">SIM</button>   
             </a>   
         </div>
       </div>
     </div>
   </div>
-  
+
+  <div class="container-fluid">
+    <hr/>
+    <h3>
+    <?php $nomes = explode(' ', $nome);
+    echo "Olá, ".$nomes['0']."!";
+    ?>      
+    </h3>   
+    <hr/> 
+  </div>
+
   <form method="POST">  
   <div class="form-row">
     <div class="col-md">
@@ -149,14 +164,14 @@ if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['perm
           <div class="form-group col-md-6">
               <label for="hora">Hora início</label>
               <select class="form-control form-control-lg" id="hora" name="hora"> 
-            <option >08:00</option>
-            <option >09:00</option>
-            <option >10:00</option>
-            <option >11:00</option>
-            <option >14:00</option>
-            <option >15:00</option>
-            <option >16:00</option>        
-            <option >17:00</option>         
+                <option >08:00</option>
+                <option >09:00</option>
+                <option >10:00</option>
+                <option >11:00</option>
+                <option >14:00</option>
+                <option >15:00</option>
+                <option >16:00</option>        
+                <option >17:00</option>         
               </select>
           </div>
       </div>  
@@ -169,14 +184,15 @@ if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['perm
 <?php if($aviso['aviso'] == true): ?>
     <?php for($i=0; $i < count($aviso['horas']); $i++): ?>   
     <?php if(isset($_GET['id']) && !empty($_GET['id'])){ $id=addslashes($_GET['id']); } ?> 
-    <div id="aviso-reserva" class="alert alert-success" role="alert">      
-    <button type="button" class="close" aria-label="Close"> 
-    <a href="<?php echo BASE_URL; ?>paciente/?id=<?php echo $id; ?>&id_reserva=<?php echo $aviso['horas'][$i]['id'] ?>">
+    <div id="aviso-reserva" class="alert alert-success" role="alert"> 
+
+    <button type="button" class="close" aria-label="Close">      
+    <a href="<?php echo BASE_URL; ?>usuario/?id=<?php echo $aviso['horas'][$i]['id_usuario']; ?>&id_reserva=<?php echo $aviso['horas'][$i]['id'] ?>">
       <span value="excluir" input="submit" aria-hidden="true">&times;</span>        
     </a>
     </button>
       <?php $datahora = date('d/m/Y \à\s H:i', strtotime($aviso['horas'][$i]['data_inicio'])); ?>
-        Esse usuário tem consulta marcada dia <?php echo $datahora; ?>
+        Você tem consulta marcada dia <?php echo $datahora; ?>
     </div>
     <?php endfor; ?>
 <?php endif; ?>
