@@ -10,9 +10,9 @@ class cadastroController extends controller{
 
 		if(isset($_POST['email']) && !empty($_POST['senha'])){
 
-			$nome = addslashes($_POST['nome']);
-			$sobrenome = addslashes($_POST['sobrenome']);
-			$nomecompleto = $nome.' '.$sobrenome;
+			$nome = ucwords(addslashes($_POST['nome']));
+			$sobrenome = ucwords(addslashes($_POST['sobrenome']));
+			$nomecompleto =  $nome.'  '.$sobrenome;			
 			$idade = addslashes($_POST['idade']);
 			$cpf = addslashes($_POST['cpf']);
 			$email = addslashes($_POST['email']);

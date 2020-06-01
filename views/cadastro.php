@@ -93,7 +93,7 @@
     <div class="form-group">
       <label for="senha">Cadastre sua senha de acesso</label>
       <input type="password" name="senha" class="form-control form-control-lg" id="senha" placeholder="Sua senha deve ter 8 ou mais caracteres">
-    </div> 
+    </div>    
     <button type="submit" class="btn btn-info">Cadastrar</button>
   </form> 
    

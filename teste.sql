@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: 30-Maio-2020 às 16:24
+-- Generation Time: 01-Jun-2020 às 00:00
 -- Versão do servidor: 5.7.26
 -- versão do PHP: 7.3.5
 
@@ -39,6 +39,22 @@ CREATE TABLE IF NOT EXISTS `endereco` (
   `numero` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `recuperar_senha`
+--
+
+DROP TABLE IF EXISTS `recuperar_senha`;
+CREATE TABLE IF NOT EXISTS `recuperar_senha` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL,
+  `cod` varchar(32) NOT NULL,
+  `tempo_cod` datetime NOT NULL,
+  `used` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 

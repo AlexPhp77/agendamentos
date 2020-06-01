@@ -19,7 +19,8 @@
   <div class="form-group">
     <label for="senha">Senha</label>
     <input type="password" name="senha" class="form-control form-control-lg" id="senha" placeholder="Digite sua senha">
-  </div> 
+    <a style="font-size: 13px;" href="<?php echo BASE_URL; ?>recuperar">Esqueceu sua senha? Clique aqui!</a>
+  </div>  
   <button type="submit" class="btn btn-info">Acessar</button>
 </form>
 </div>

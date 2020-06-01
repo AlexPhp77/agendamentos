@@ -140,7 +140,7 @@ class Usuarios extends Conexao{
 
     	if($this->verificarEmail() && $this->setSenha($this->senha) && $this->setNumero($this->numero)){
 
-	    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = trim(:senha)");	    	
+	    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = md5(trim(:senha))");	    	
 	    	$sql->bindValue(':nome', str_replace('  ', '', $this->nomecompleto));    	
 	    	$sql->bindValue(':idade', $this->idade);
 	    	$sql->bindValue(':cpf',  str_replace(' ', '', $this->cpf));  
@@ -194,7 +194,7 @@ class Usuarios extends Conexao{
 
 		$sql = $this->pdo->prepare("SELECT * FROM usuarios WHERE email = :email AND senha = :senha");
 		$sql->bindValue(':email', $email);
-		$sql->bindValue(':senha', $senha);
+		$sql->bindValue(':senha', md5($senha));
 		$sql->execute();
 
 		if($sql->rowCount() > 0){
@@ -290,4 +290,140 @@ class Usuarios extends Conexao{
 			return $dados; 
 		}
 	}	
+
+	public function recuperarSenha(){
+        $sql = $this->pdo->prepare("SELECT id, email FROM usuarios WHERE email = :email");
+        $sql->bindValue(':email', $this->email);
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+
+            $sql = $sql->fetch();
+            $id = $sql['id']; 
+
+            $cod = md5(time().rand(0, 9999).rand(0, 9999));
+
+            $sql = $this->pdo->prepare("INSERT INTO recuperar_senha SET id_usuario = :id_usuario, cod = :cod, tempo_cod = :tempo_cod");
+            $sql->bindValue(':id_usuario', $id);
+            $sql->bindValue(':cod', $cod);            
+            $sql->bindValue(':tempo_cod', date('Y-m-d H:i', strtotime('+1 hours')));
+            $sql->execute();
+
+            $link = BASE_URL."redefinir?cod=".$cod;
+
+            $assunto = "Redefinição de senha";
+
+            $mensagem = "Olá, você solicitou uma alteração de senha? Clique no link para redefiní-la: ".$link."\r\n"." Caso contrário, ignore essa mensagem! Obrigado";
+
+            utf8_encode($assunto);
+
+            $headers = "From: contato@clinica.com.br"."\r\n".
+                       "X-Mailer: PHP/".phpversion();
+
+                       echo $mensagem;
+
+           // mail($this->email, $assunto, $mensagem, $headers);
+
+            return true; 
+                
+
+        } else {
+            return false; 
+        }
+    }
+
+    public function redefinirSenha($cod){
+
+        $sql = $this->pdo->prepare("SELECT * FROM recuperar_senha WHERE cod = :cod AND used = 0 AND tempo_cod > NOW()");
+        $sql->bindValue(':cod', $cod);              
+        $sql->execute();
+
+        if($sql->rowCount() > 0){
+            $sql = $sql->fetch();
+
+            $id = $sql['id_usuario']; 
+
+            $sql = $this->pdo->prepare("UPDATE usuarios SET senha = md5(:senha) WHERE id = :id");
+            $sql->bindValue(':senha', $this->senha);
+            $sql->bindValue(':id', $id);
+            $sql->execute();
+
+           if(!empty($this->senha)){
+
+                $sql = $this->pdo->prepare("UPDATE recuperar_senha SET used = 1 WHERE cod = :cod");
+                $sql->bindValue(':cod', $cod);
+                $sql->execute();                 
+               
+            }
+
+            return true; 
+
+        } else{
+           return false;            
+        }
+    }
 }
+
+
+
+
+
+
+/*	//Defino a Chave do meu site
+$secret_key = '6Lf4GvMUAAAAALm0_jIrs20KFYpB_LOeAv8XJ4JB';
+
+//Pego a validação do Captcha feita pelo usuário
+$recaptcha_response = $_POST['g-recaptcha-response'];
+
+//Verifico se foi feita a postagem do Captcha 
+if(isset($recaptcha_response)){
+		
+	//Valido se a ação do usuário foi correta junto ao google
+	$answer = 
+		json_decode(
+			file_get_contents(
+				'https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.
+				'&response='.$_POST['g-recaptcha-response']
+			)
+		);
+
+	//Se a ação do usuário foi correta executo o restante do meu formulário
+	if($answer->success) {		
+
+		if($this->verificarEmail() && $this->setSenha($this->senha) && $this->setNumero($this->numero)){
+
+    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = md5(trim(:senha))");	    	
+    	$sql->bindValue(':nome', str_replace('  ', '', $this->nomecompleto));    	
+    	$sql->bindValue(':idade', $this->idade);
+    	$sql->bindValue(':cpf',  str_replace(' ', '', $this->cpf));  
+    	$sql->bindValue(':email', $this->email);   	
+    	$sql->bindValue(':telefone', str_replace(' ', '', $this->telefone));
+    	$sql->bindValue(':senha', $this->senha);
+    	$sql->execute();
+        
+        Id da primeira inserção 
+        Tabela endereço terá o id do usuário inserido
+    	$id = $this->pdo->lastInsertId();
+
+    	if($id > 0){
+
+	    	$sql = $this->pdo->prepare("INSERT INTO endereco SET id_usuario = :id_usuario, estado = trim(:estado), cidade = trim(:cidade), cep = trim(:cep), rua = trim(:rua), numero = trim(:numero)"); 
+	    	$sql->bindValue(':id_usuario', $id);
+	    	$sql->bindValue(':estado',  str_replace('  ', '', $this->estado)); 
+	    	$sql->bindValue(':cidade', str_replace('  ', '', $this->cidade)); 
+	    	$sql->bindValue(':cep', str_replace(' ', '', $this->cep)); 
+	    	$sql->bindValue(':rua', str_replace('  ', '', $this->rua)); 
+	    	$sql->bindValue(':numero', $this->numero);
+	    	$sql->execute();   
+
+	    	return true;   
+
+	    } else {
+				$m = "Por favor, faça a verificação do captcha abaixo!";
+				return $m; 
+			}
+		}	
+    }   
+}   
+
+*/

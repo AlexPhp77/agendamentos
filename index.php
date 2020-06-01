@@ -1,6 +1,15 @@
 <?php 
 session_start();
 
+if(empty($_SESSION['seguranca'])){/*IP usuário e a referência ao seu navegador*/
+	$_SESSION['seguranca'] = md5($_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
+}
+
+$token =  md5($_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
+if($_SESSION['seguranca'] != $token){
+	exit; 
+}
+
 define('BASE_URL', 'http://localhost/sistemas/agendamentos/');
 date_default_timezone_set('America/Sao_Paulo');
 

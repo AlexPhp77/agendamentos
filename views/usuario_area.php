@@ -122,7 +122,7 @@ if($permissoes == 'ADMINISTRADOR'){ /*Administrador não acessa a página usuár
      
    
      <button style="float: right;" class="btn btn-outline-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-      Marcar consulta
+      Marcar consulta <img width="15px" src="<?php echo BASE_URL; ?>assets/images/seta-baixo.svg">
      </button>
   
   <br/><br/>
