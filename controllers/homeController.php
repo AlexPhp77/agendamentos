@@ -49,7 +49,7 @@ class homeController extends controller{
 
 		$permissao = $u->permissoes(); 
 
-                $aviso_reservas = $r->avisoConsultas(); 
+        $aviso_reservas = $r->avisoConsultas(); 
 
 		$dados = array(
 			'lista' => $lista,
@@ -57,11 +57,12 @@ class homeController extends controller{
 			'total_reg' => $total_reg,
 			'permissao' => $permissao,
 			'btn' => $btn,
-                        'avisos' => $aviso_reservas
+            'avisos' => $aviso_reservas
+            
 			
 		);
 
-                $this->loadTemplate('home', $dados);
+        $this->loadTemplate('home', $dados);
 	}
 		
 }

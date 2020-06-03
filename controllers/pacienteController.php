@@ -54,15 +54,16 @@ class pacienteController extends controller{
 		   
             $data = addslashes($_POST['data']);
 			$hora = addslashes($_POST['hora']); 
-
+			
 			$m = date('m');
 			$Y = date('Y');  		 
 			$data_inicio = $Y."-".$m."-".$data." ".$hora;
 			
 			date_default_timezone_set('America/Sao_Paulo'); 
+		
 			$data_atual = date('Y-m-d H:i');
 			
-			print_r($data_inicio);                
+			print_r($data_atual);
            
 			if($data_inicio >= $data_atual){				
 

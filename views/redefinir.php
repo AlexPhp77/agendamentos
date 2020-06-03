@@ -32,7 +32,7 @@
 
 <?php
     } else {
-    	echo "<br/><div class='container alert alert-danger'>Link inválido ou inspirado!</div>";
+    	echo "<br/><div class='container alert alert-danger'>Link inválido ou expirado!</div>";
     	exit;      
     }
 ?>

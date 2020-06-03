@@ -6,22 +6,29 @@ class loginController extends controller{
 
 		$dados = array();	
 
-		$u = new Usuarios();		
+		$u = new Usuarios();
 
 		if(isset($_POST['email']) && !empty($_POST['senha'])){
 
 			$email = addslashes($_POST['email']);
 			$senha = addslashes($_POST['senha']);
+			$codigo = addslashes($_POST['codigo']);
+            
+            $m = '';
+            $m2 = '';
+			if($u->captcha($codigo)){
+				$m2 = $u->login($email, $senha);	
+			} else{
+				$m = "Código inválido!";
+			}			
 
-			$m = $u->login($email, $senha);	
-
-			if($m == false){
-				$m = "E-mail e/ou senha errados!";
-				
-			}
+			if($m2== false && is_bool($m2)){
+				$m2 = "E-mail e/ou senha errados!";				
+			}			
 
 			$dados = array(
-			    'm' => $m
+			    'm' => $m,
+			    'm2' => $m2
 		    ); 			   
 		}		
          

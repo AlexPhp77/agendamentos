@@ -23,9 +23,7 @@ class Reservas extends Conexao{
     	$sql->bindValue(':id_usuario', $id);
     	$sql->execute();
 
-    	?>
-        <script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>usuario"</script>
-    	<?php
+        echo "<meta http-equiv='refresh'>";
     }
 
 	public function pesquisar($texto){
@@ -68,10 +66,6 @@ class Reservas extends Conexao{
 		$sql->execute();	
 
 		return true; 
-
-		?>
-        <script type="text/javascript">document.location.reload(true);</script>
-		<?php
 		
 		} 
 	}

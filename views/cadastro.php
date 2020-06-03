@@ -1,8 +1,10 @@
 <?php
 
-  if(isset($_SESSION['logado']) && !empty($_SESSION['logado'])){
-    header('Location: ./');     
-  }
+    if(isset($_SESSION['logado']) && !empty($_SESSION['logado']) && $permissao['permissoes'] != 'ADMINISTRADOR' ){
+      ?>
+      <script type="text/javascript">window.location.href="./"</script>
+      <?php 
+    } 
 ?> 
 
 <div class="container">
@@ -93,8 +95,28 @@
     <div class="form-group">
       <label for="senha">Cadastre sua senha de acesso</label>
       <input type="password" name="senha" class="form-control form-control-lg" id="senha" placeholder="Sua senha deve ter 8 ou mais caracteres">
-    </div>    
-    <button type="submit" class="btn btn-info">Cadastrar</button>
+    </div>
+      <?php if(empty($_SESSION['logado']) && $permissao['permissoes'] != 'ADMINISTRADOR'): ?>
+      
+      <label for="codigo">Captcha</label>
+      
+      <div class="form-group row">
+        
+      <div style="margin-right: 30px" class="col-md-1">
+        <img  src="<?php echo BASE_URL; ?>captcha/imagem.php">          
+      </div>    
+       
+      <input style="border-radius: 0px; height: 50px;"  type="text" name="codigo" class="form-control form-control-lg col" id="codigo" placeholder="Insira o código">
+        
+      <div style="padding-left: 0px;" class="col-3">
+        <button style="float: right;" type="submit" class="btn btn-info">Cadastrar</button> 
+      </div> 
+    </div>
+    <?php else: ?>
+    <button style="float: right;" type="submit" class="btn btn-info">Cadastrar</button>
+    <?php endif; ?>  
+    
   </form> 
    
 </div>
+

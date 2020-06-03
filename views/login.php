@@ -1,15 +1,24 @@
 <?php
 
 	if(isset($_SESSION['logado']) && !empty($_SESSION['logado'])){
-		header('Location: ./');			
+	    ?>
+	    <script type="text/javascript">window.location.href="./"</script>
+	    <?php
 	}
+
 ?>  
-    
+
+
 <div class="container">
   <form method="POST">
   <?php if(!empty($m)): ?>  
     <div class="alert alert-warning" style="margin-top: 10px;">
       <?php echo $m; ?>
+    </div>   
+  <?php endif; ?>
+  <?php if(!empty($m2)): ?>  
+    <div class="alert alert-danger" style="margin-top: 10px;">
+      <?php echo $m2; ?>
     </div>   
   <?php endif; ?>
   <div class="form-group">
@@ -20,7 +29,14 @@
     <label for="senha">Senha</label>
     <input type="password" name="senha" class="form-control form-control-lg" id="senha" placeholder="Digite sua senha">
     <a style="font-size: 13px;" href="<?php echo BASE_URL; ?>recuperar">Esqueceu sua senha? Clique aqui!</a>
-  </div>  
+  </div> 
+  <div class="form-group row col-3">
+    <label for="codigo">Captcha</label>
+    <input type="text" name="codigo" class="form-control form-control-lg" id="codigo" placeholder="Insira o código">   
+  </div> 
+  <div class="form-group">
+    <img src="<?php echo BASE_URL; ?>./captcha/imagem.php">    
+  </div>
   <button type="submit" class="btn btn-info">Acessar</button>
 </form>
 </div>

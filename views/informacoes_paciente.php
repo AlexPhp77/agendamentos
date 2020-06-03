@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/São_Paulo');
 
 if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['permissoes'] != 'ADMINISTRADOR'){
   unset($_SESSION['logado']);
@@ -107,8 +108,8 @@ if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['perm
      
    
      <button style="float: right;" class="btn btn-outline-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-      Marcar consulta
-     </button>
+      Marcar consulta <img width="15px" src="<?php echo BASE_URL; ?>assets/images/seta-baixo.svg">
+     </button>     
   
   <br/><br/>
   <hr/>

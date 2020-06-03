@@ -6,7 +6,8 @@ class cadastroController extends controller{
 
 		$dados = array();	
 
-		$u = new Usuarios();		
+		$u = new Usuarios();	
+		$p = $u->permissoes();
 
 		if(isset($_POST['email']) && !empty($_POST['senha'])){
 
@@ -23,12 +24,16 @@ class cadastroController extends controller{
 			$cep = addslashes($_POST['cep']);
 			$rua = addslashes($_POST['rua']);
 			$numero = addslashes($_POST['numero']);
+			$codigo = addslashes($_POST['codigo']);
             
             $m = '';
-            $m2 = '';  
-           					
-			$m = $u->infoAllCadastrar($nomecompleto, $idade, $cpf, $email, $telefone, $senha, $estado, $cidade, $cep, $rua, $numero);	
+            $m2 = ''; 
 
+			if($u->captcha($codigo) or $p['permissoes'] == 'ADMINISTRADOR'){
+				$m = $u->infoAllCadastrar($nomecompleto, $idade, $cpf, $email, $telefone, $senha, $estado, $cidade, $cep, $rua, $numero);
+			} else{
+				$m = "Código inválido!";
+			}
 			
 			if($m == true){
 				$m = "Cadastrado com sucesso!";				
@@ -59,16 +64,19 @@ class cadastroController extends controller{
 		    } else{
 		    	$m3 = '';
 		    }
-
-            $dados = array(
+            
+           $dados = array(
 		       'm' => $m,
 		       'm2' => $m2,
 		       'm3' => $m3,
 		       'm4'	=> $m4,
-		       'm5' => $m5     
+		       'm5' => $m5
+		      
 		    );
 		}	
-         
+		
+		$dados['permissao'] = $u->permissoes();
+        
 		$this->loadTemplate('cadastro', $dados); 	
 	}
 }

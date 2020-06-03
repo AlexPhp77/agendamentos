@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<head lang="pt-br">
-  <meta charset="utf-8">
+<head lang="pt-br"><meta charset="gb18030">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>assets/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>assets/css/style.css">
@@ -26,7 +26,7 @@
                       <a class="nav-link" href="<?php echo BASE_URL; ?>./">Home<span class="sr-only">(current)</span></a>
                     </li> 
                     <li class="nav-item">
-                      <a class="nav-link" href="<?php echo BASE_URL; ?>cadastro">Cadastro</a>
+                      <a class="nav-link" href="cadastro">Cadastro</a>
                     </li> 
                     <li class="nav-item">
                       <a class="nav-link" href="<?php echo BASE_URL; ?>login">Entrar</a>

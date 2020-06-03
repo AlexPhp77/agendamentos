@@ -56,14 +56,16 @@ class usuarioController extends controller{
 		if(isset($_POST['data']) && !empty($_POST['data'])){
 		   
             $data = addslashes($_POST['data']);
-			$hora = addslashes($_POST['hora']); 
+			$hora = addslashes($_POST['hora']);
+			
+			date_default_timezone_set('America/Sao_Paulo');
 
 			$m = date('m');
 			$Y = date('Y');  		 
 			$data_inicio = $Y."-".$m."-".$data." ".$hora;
-			
-			date_default_timezone_set('America/Sao_Paulo'); 
+		 
 			$data_atual = date('Y-m-d H:i');
+		  
            
 			if($data_inicio >= $data_atual){				
 
@@ -71,7 +73,7 @@ class usuarioController extends controller{
 			        $msg2 = "Já existe consulta marcada para esse horário!";
 			    } 
 
-			    if($r->addReservas($id, $data_inicio) == true){
+			    if($r->addReservas($id, $data_inicio)){
 					$msg3 = "Consulta marcada com sucesso!";					
 				}
 
@@ -83,7 +85,9 @@ class usuarioController extends controller{
 		if(isset($_GET['id_reserva']) && !empty($_GET['id_reserva'])){
 		    $id_reserva = addslashes($_GET['id_reserva']);
 
-		    $r->deletarReserva($id, $id_reserva);
+		    if($r->deletarReserva($id, $id_reserva)){
+		       echo "<meta HTTP-EQUIV='refresh' CONTENT='0'>";
+		    }
 		}	
        
         foreach($dados as $dado){

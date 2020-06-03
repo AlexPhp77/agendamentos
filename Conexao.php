@@ -16,9 +16,9 @@ class Conexao{
 			$config['dbpass'] = '';
 			
 		} else{			
-			$config['dbname'] = 'www.meusite.com.br';
+			$config['dbname'] = 'lalehu09_agenda';
 			$config['host'] = 'localhost';
-			$config['dbuser'] = 'root';
+			$config['dbuser'] = '';
 			$config['dbpass'] = '';			
 		}
 

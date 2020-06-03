@@ -5,8 +5,15 @@
     if(isset($_SESSION['logado']) && !empty($_SESSION['logado']) && $permissao['permissoes'] == 'ADMINISTRADOR'): ?>
 	<div class="container">  
 		    <hr/>
-		    <div>
+		    <div class='row align-items-center '>
+		        <div class='col-md-10'>
 		    	<?php echo "Área restrita ( ".$permissao['permissoes']." )";  ?>
+    		    </div>
+    		    <div style='float: right;' class='col'>
+    		        <a class="nav-link" href="cadastro">
+    		            <img width="90px" src='<?php echo BASE_URL; ?>assets/images/add-paciente.svg'>
+    		        </a>
+    		    </div>
 		    </div>
 		    <hr/>
 		    <?php foreach($avisos as $aviso): ?>

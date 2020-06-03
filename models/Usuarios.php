@@ -131,8 +131,9 @@ class Usuarios extends Conexao{
 	        $sql->execute();        
 
 	        if($sql->rowCount() > 0){
-	            return $dado = $sql->fetch();
-
+	           
+	            $dado = $sql->fetch();
+                return $dado; 
 	        }
         }
     }    
@@ -200,6 +201,7 @@ class Usuarios extends Conexao{
 		if($sql->rowCount() > 0){
 			$dado = $sql->fetch();
 			$_SESSION['logado'] = $dado['id'];
+		    //return true; 
 			?>
         	<script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>usuario";</script>
         	<?php  
@@ -315,14 +317,14 @@ class Usuarios extends Conexao{
 
             $mensagem = "Olá, você solicitou uma alteração de senha? Clique no link para redefiní-la: ".$link."\r\n"." Caso contrário, ignore essa mensagem! Obrigado";
 
-            utf8_encode($assunto);
+           
 
             $headers = "From: contato@clinica.com.br"."\r\n".
                        "X-Mailer: PHP/".phpversion();
 
-                       echo $mensagem;
+                       /*echo $mensagem;*/
 
-           // mail($this->email, $assunto, $mensagem, $headers);
+            mail($this->email, $assunto, $mensagem, $headers);
 
             return true; 
                 
@@ -361,6 +363,20 @@ class Usuarios extends Conexao{
         } else{
            return false;            
         }
+    }
+
+    public function captcha($codigo){
+
+    	if($codigo == $_SESSION['captcha']){
+
+    	$n = rand(1000, 9999);
+        $_SESSION['captcha'] = $n; /*Após executado irá gerar outro código, acertando ou não.*/
+
+		return true; 
+
+		} else{
+			return false; 
+		}
     }
 }
 
