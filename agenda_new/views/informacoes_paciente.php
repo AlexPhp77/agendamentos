@@ -1,8 +1,9 @@
 <?php
 //date_default_timezone_set('America/São_Paulo');
 
-if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['permissoes'] != 'ADMINISTRADOR'){
-  unset($_SESSION['logado']);
+
+if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'])){
+  unset($_SESSION['logadoFuncionario']);
   ?>
   <script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>./"</script>
   <?php
@@ -52,20 +53,29 @@ if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['perm
   <div class="form-row">
     <div class="col-md-6">
        <label for="idade">Idade</label>
-       <input  value="<?php echo $idade; ?>" type="text" name="idade" class="form-control form-control-lg" id="idade" placeholder="Sua idade">      
+       <input value="<?php echo $idade; ?>" type="text" name="idade" class="form-control form-control-lg" id="idade" placeholder="Sua idade">      
     </div>
+
     <div class="col-md-6">
-       <label for="cpf">CPF</label>
-       <input value="<?php echo $cpf; ?>" type="text" name="cpf" class="form-control form-control-lg" id="cpf" placeholder="CPF">
+      <label for="sexo">Sexo</label>
+      <select name="sexo" id="sexo" class="form-control form-control-lg">
+      <option value="Masculino" <?php echo ($sexo=='Masculino')?'selected="selected"':''; ?>>Masculino</option> 
+      <option value="Feminino" <?php echo ($sexo=='Feminino')?'selected="selected"':''; ?>>Feminino</option>
+      </select>      
     </div>   
+
   </div>
- 
+
   <div class="form-row">
-    <div class="col-md">
+    <div class="col-md-6"> 
+      <label for="cpf">CPF</label>
+       <input value="<?php echo $cpf; ?>" type="text" name="cpf" class="form-control form-control-lg" id="cpf" placeholder="CPF">
+    </div> 
+     <div class="col-md-6">
        <label for="email">E-mail</label>
        <input value="<?php echo $email; ?>" type="text" name="email" class="form-control form-control-lg" id="email" placeholder="exemplo@email.com">      
-    </div>
-  </div> 
+    </div>    
+  </div>
 
    <div class="form-row">
     <div class="col-md">
@@ -138,7 +148,7 @@ if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['perm
     <div class="container">
     <form method="POST">
       <div class="form-row">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
               <label for="data">Dia da consulta</label>           
               <select class="form-control form-control-lg" id="data" name="data">
                 <option >Selecionar dia</option>
@@ -147,18 +157,27 @@ if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['perm
               <?php endfor; ?>
               </select>
           </div>
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
               <label for="hora">Hora início</label>
               <select class="form-control form-control-lg" id="hora" name="hora"> 
-            <option >08:00</option>
-            <option >09:00</option>
-            <option >10:00</option>
-            <option >11:00</option>
-            <option >14:00</option>
-            <option >15:00</option>
-            <option >16:00</option>        
-            <option >17:00</option>         
+                  <option >08:00</option>
+                  <option >09:00</option>
+                  <option >10:00</option>
+                  <option >11:00</option>
+                  <option >14:00</option>
+                  <option >15:00</option>
+                  <option >16:00</option>        
+                  <option >17:00</option>         
               </select>
+          </div>          
+          <div class="form-group col-md-4">
+            <label for="doutor">Doutor(a)</label>
+                <select class="form-control form-control-lg" id="doutor" name="doutor">
+                    <option disabled selected>Selecionar</option>
+                    <?php foreach($funcionarios as $funcionario): ?>
+                      <option value="<?php echo $funcionario['id']; ?>"><?php echo $funcionario['nome']; ?></option>
+                    <?php endforeach; ?>                    
+                </select>            
           </div>
       </div>  
           <button type="submit" class="btn btn-info">Reservar</button>
@@ -177,7 +196,9 @@ if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR $permissao['perm
     </a>
     </button>
       <?php $datahora = date('d/m/Y \à\s H:i', strtotime($aviso['horas'][$i]['data_inicio'])); ?>
-        Esse usuário tem consulta marcada dia <?php echo $datahora; ?>
+        Esse usuário tem consulta marcada dia <?php echo $datahora; ?> com o doutor(a)
+        <?php echo $aviso['horas'][$i]['nome']; ?>
+       
     </div>
     <?php endfor; ?>
 <?php endif; ?>

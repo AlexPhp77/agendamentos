@@ -1,0 +1,58 @@
+html, body{
+   margin: 0px;
+   padding: 0px; 
+   height: 100vh;
+   padding-top: 28px;
+   height: 100%;
+
+  
+}
+.container-fluid {
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.slide-textos{ 
+    max-width: 1600px;  
+	width: 100%; 
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.carousel-item p{
+	font-size: 22px;
+}
+footer{
+	padding: 20px;
+	background-color:#17a2b8;
+
+}
+.reservar{
+  display: none;
+}
+.fundo{
+  background-color: #3a7fd5; 
+  min-height: 100vh; 
+}
+.form-control-lg{
+  min-width: 100px;
+}
+
+@media(max-width:700px){
+  footer{    
+    display: none;
+  } 
+  .imagem-fundo{
+    display: none;
+  }
+  .imagem-fundo{
+    display: none;
+  }
+}
+
+
+
+

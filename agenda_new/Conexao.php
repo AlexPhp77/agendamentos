@@ -10,7 +10,7 @@ class Conexao{
 		$config = array();
 
 		if(MEIO == 'developer'){
-			$config['dbname'] = 'teste';
+			$config['dbname'] = 'agendamento_pacientes';
 			$config['host'] = 'localhost';
 			$config['dbuser'] = 'root';
 			$config['dbpass'] = '';
@@ -19,7 +19,7 @@ class Conexao{
 			$config['dbname'] = 'lalehu09_agenda';
 			$config['host'] = 'localhost';
 			$config['dbuser'] = 'lalehu09';
-			$config['dbpass'] = '';			
+			$config['dbpass'] = '@fifafut92f';			
 		}
 
 		try{

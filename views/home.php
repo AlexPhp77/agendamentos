@@ -29,7 +29,7 @@
 				    	<?php echo "TELEFONE: </br>".$aviso['telefone']; ?>
 				    </div>
 				    <div class="col-sm">
-				    	<?php echo "DIA E HORÁRIO DA CONSULTA: ".$aviso['data_inicio']." às ".date('H:i', strtotime($aviso['data_fim'])); ?>
+				    	<?php echo "DIA E HORÁRIO DA CONSULTA: ".date('H:i', strtotime($aviso['data_inicio']))." às ".date('H:i', strtotime($aviso['data_fim'])); ?>
 				    </div>	
 
 				     <form method="POST">
