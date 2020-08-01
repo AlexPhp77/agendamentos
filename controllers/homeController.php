@@ -184,9 +184,7 @@ try {
         date_default_timezone_set('America/Sao_Paulo');       
       
                        
-                $title = $_POST['title'];
-                $start = date('Y-m-d H:i', strtotime($_POST['start']));
-                $end = date('Y-m-d H:i', strtotime($_POST['end']));
+              
 
                 if(!empty($_POST['allDay'])){
                     $allDay = $_POST['allDay'];
@@ -199,11 +197,13 @@ try {
                        $allDay = 0;
                 }
               } else{
-        
-                    $start = date('Y-m-d H:i', $_POST['start']);
-                    $end = date('Y-m-d H:i', $_POST['end']);
+
+                    $start = new DateTime(date('Y-m-d H:i:s'));
+                    $end = new DateTime(date('Y-m-d H:i:s'));
+
+                    $interval = $start->diff($end);
                     
-                    if($interval->d > 0){
+                    if($interval > '0'){
 
                         $allDay = 1;   
                     } 
@@ -214,13 +214,18 @@ try {
         } else{
             $cor = NULL;
         }
+
+          $title = $_POST['title'];
+                $start = date('Y-m-d H:i', strtotime($_POST['start']));
+                $end = date('Y-m-d H:i', strtotime($_POST['end']));
+
 }
 
        // echo $start."<br/>";
        // echo $end."<br/>";  
        // echo $allDay; 
         //echo  $title;
-      
+       //var_dump($start);
 
         $sql = $pdo->prepare("INSERT INTO reserva SET titulo = :titulo, data_inicio = :data_inicio, data_fim = :data_fim, all_day = :allDay, cor = :cor");
         $sql->bindValue(':titulo', $title);
@@ -230,7 +235,7 @@ try {
         $sql->bindValue(':allDay', $allDay);
         $sql->execute();        
 
-
+        header('Location: '.BASE_URL); 
      }
         
     

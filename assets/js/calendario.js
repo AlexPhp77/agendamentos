@@ -50,10 +50,16 @@
 
         url: BASE_URL+'home/listar_datas', 
 
-        failure: function() {
-          document.getElementById('script-warning').style.display = 'inline'; // show
-        }
+        failure: function() {         
 
+          if (document.querySelector('#script-warning')){
+     
+   document.getElementById('script-warning').style.display = 'inline'; // show
+ 
+}
+
+           
+        }
       },
       eventColor: 'red',
     
@@ -79,6 +85,8 @@
             alert('Erro');
           }
         })
+
+        calendar.refetchEvents()
       }  
     },   
 
@@ -113,11 +121,11 @@
     select: function(arg) {
       var title = prompt('Título do evento:');
       if (title) {
-          calendar.addEvent({
+          /*calendar.addEvent({
             title: title,
             start: arg.start,
             end: arg.end,                       
-      })
+      })*/
              
       var start = arg.start.toISOString();
       var end = arg.end.toISOString(); 
@@ -128,7 +136,7 @@
         url: BASE_URL+'home/inserir_datas',
         data:{start:start,end:end,allDay:allDay,title:title},   
         success:function(msg){
-          console.log(msg);
+           calendar.refetchEvents();
         },
         error:function(msg){
           console.log(msg);
@@ -136,8 +144,9 @@
         }
 
         })
+      
       }
-      calendar.unselect()
+    
       },       
 
         eventClick: function(arg) {

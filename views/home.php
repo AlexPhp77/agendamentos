@@ -32,8 +32,19 @@
 			      </label>
 			    </div>
 			    <div class=" col-md-6">
-			      <label  class="col-sm-12 col-form-label">Cor
-			            <input name="cor" type="color" class="form-control" placeholder="Cor">
+			      <label  class="col-sm-12 col-form-label">Cor			            
+
+			            <input class="form-control" type="color" id="cores" name="cor" list="arcoIris" value="#FF0000">
+						<datalist id="arcoIris">
+						<option value="#FF0000">Vermelho</option>
+						<option value="#FFA500">Laranja</option>
+						<option value="#FFFF00">Amarelo</option>
+						<option value="#008000">Verde</option>
+						<option value="#0000FF">Azul</option>
+						<option value="#4B0082">Indigo</option>
+						<option value="#EE82EE">Violeta</option>
+						</datalist>
+
 			      </label>
 			    </div>			  
 			   </div> 
