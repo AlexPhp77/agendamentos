@@ -1,13 +1,23 @@
 <?php
 
-    if(isset($_SESSION['logado']) && !empty($_SESSION['logado']) && $permissao['permissoes'] != 'ADMINISTRADOR' ){
+    if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'])){
       ?>
       <script type="text/javascript">window.location.href="./"</script>
       <?php 
     } 
+
+      
 ?> 
 
 <div class="container">
+  <hr/>
+  <div style="display: flex; justify-content: space-between;">
+    <h5 style="color: #17a2b8;" >Cadastrar paciente</h5>
+    <a href="<?php echo BASE_URL; ?>./">
+      <img width="30px" src="<?php echo BASE_URL; ?>assets/images/voltar.png">    
+    </a>
+  </div>
+  <hr/>
   <?php if(!empty($m)): ?>  
     <div class="alert alert-success" style="margin-top: 10px;">
       <?php echo $m; ?>
@@ -32,6 +42,11 @@
       <?php echo $m5; ?>
     </div>
   <?php endif; ?>
+   <?php if(!empty($m6)):?>
+     <div class="alert alert-warning" style="margin-top: 10px;">
+      <?php echo $m6; ?>
+    </div>
+  <?php endif; ?>
   <form method="POST">  
   <div class="form-row">
     <div class="col-md-6">
@@ -50,25 +65,35 @@
        <label for="idade">Idade</label>
        <input type="text" name="idade" class="form-control form-control-lg" id="idade" placeholder="Sua idade">      
     </div>
+
     <div class="col-md-6">
-       <label for="cpf">CPF</label>
-       <input type="text" name="cpf" class="form-control form-control-lg" id="cpf" placeholder="CPF">
+      <label for="sexo">Sexo</label>
+      <select name="sexo" id="sexo" class="form-control form-control-lg">
+        <option disabled selected>Selecionar</option>
+        <option value="Masculino">Masculino</option>
+        <option value="Feminino">Feminino</option>
+      </select>      
     </div>   
+
+  </div>
+
+  <div class="form-row">
+    <div class="col-md-12"> 
+      <label for="cpf">CPF</label>
+       <input type="text" name="cpf" class="form-control form-control-lg" id="cpf" placeholder="CPF">
+    </div>     
   </div>
  
   <div class="form-row">
-    <div class="col-md">
-       <label for="email">E-mail</label>
+    <div class="col-md-6">
+       <label for="email">E-mail (Opcional)</label>
        <input type="text" name="email" class="form-control form-control-lg" id="email" placeholder="exemplo@email.com">      
     </div>
-  </div> 
-
-   <div class="form-row">
-    <div class="col-md">
+    <div class="col-md-6">
       <label for="telefone">Telefone ou Celular</label>
       <input type="text" name="telefone" class="form-control form-control-lg" id="telefone" placeholder="(00) 00000-0000">      
     </div>
-  </div> 
+  </div>   
 
    <div class="form-row">
     <div class="col-md">
@@ -91,12 +116,12 @@
        <label for="numero">Numero</label>
        <input type="text" name="numero" class="form-control form-control-lg" id="numero" placeholder="Numero">
     </div>  
-  </div>
-    <div class="form-group">
+  </div> <br/>
+    <!--<div class="form-group">
       <label for="senha">Cadastre sua senha de acesso</label>
       <input type="password" name="senha" class="form-control form-control-lg" id="senha" placeholder="Sua senha deve ter 8 ou mais caracteres">
-    </div>
-      <?php if(empty($_SESSION['logado']) && $permissao['permissoes'] != 'ADMINISTRADOR'): ?>
+    </div>-->
+      <?php if(empty($_SESSION['logadoFuncionario']) && $permissao['permissoes'] != 'SECRETARIO'): ?>
       
       <label for="codigo">Captcha</label>
       
@@ -110,13 +135,14 @@
         
       <div style="padding-left: 0px;" class="col-3">
         <button style="float: right;" type="submit" class="btn btn-info">Cadastrar</button> 
-      </div> 
+      </div>      
     </div>
     <?php else: ?>
     <button style="float: right;" type="submit" class="btn btn-info">Cadastrar</button>
-    <?php endif; ?>  
+    <?php endif; ?> 
+    <br/> 
     
   </form> 
-   
+  <br/> 
 </div>
 

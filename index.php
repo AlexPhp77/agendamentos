@@ -12,7 +12,7 @@ if($_SESSION['seguranca'] != $token){
 
 require 'captcha/captcha.php';
 
-define('BASE_URL', 'http://localhost/sistemas/agendamentos/');
+define('BASE_URL', 'http://localhost/agenda_new/');
 //define('BASE_URL', 'https://amostra.lalehub.com.br/agenda/');
 date_default_timezone_set('America/Sao_Paulo');
 

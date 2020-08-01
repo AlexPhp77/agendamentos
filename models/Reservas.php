@@ -40,12 +40,15 @@ class Reservas extends Conexao{
 
 	}
 
-	public function verificarDisponibilidade($horario){
+	public function verificarDisponibilidade($horario, $id_dentista){
+
+		date_default_timezone_set('America/Sao_Paulo');
 
 		$sql = $this->pdo->prepare("SELECT * FROM reserva WHERE 
-			(NOT (data_inicio > :data_fim OR data_fim < :data_inicio))");
-		$sql->bindValue(':data_inicio', $horario);		
-		$sql->bindValue(':data_fim', date('Y-m-d H:i', strtotime($horario.'+1 hours')));
+			(NOT (data_inicio > :data_fim OR data_fim < :data_inicio)) AND id_dentista = :id_dentista");
+		$sql->bindValue(':id_dentista', $id_dentista);
+		$sql->bindValue(':data_inicio', date('Y-m-d H:i', strtotime($horario)));		
+		$sql->bindValue(':data_fim', date('Y-m-d H:i', strtotime($horario.'+59 minutes')));
 		$sql->execute();
 
 		if($sql->rowCount() > 0){
@@ -55,12 +58,38 @@ class Reservas extends Conexao{
 		}
 	}
 
-	public function addReservas($id, $data_inicio){	
-	
-	   	if($this->verificarDisponibilidade($data_inicio)){
+	public function verificarReservaDia(){
+		$dados = array();				
 
-		$sql = $this->pdo->prepare("INSERT reserva SET data_inicio = :data_inicio, data_fim = :data_fim, id_usuario = :id_usuario");
+		$sql = $this->pdo->query("SELECT id_usuario, data_inicio, data_fim FROM reserva GROUP BY id_dentista ORDER BY cast(data_inicio as date) ASC");
+
+		if($sql->rowCount() > 0){
+			$dados = $sql->fetchAll();
+			foreach ($dados as $dado) {
+				date_parse_from_format('Y-m-d', $dado['data_inicio']);
+				return $dados;
+			}			
+		} 
+		return $dados;		
+	}
+
+	
+
+	public function qtReservasExistem(){ 
+		$dados = array();
+
+		$sql = $this->pdo->query("SELECT COUNT(*) as totalReserva, data_inicio FROM reserva GROUP BY cast(data_inicio as date)");
+		$dados = $sql->fetchAll();
+		return $dados;
+	}  
+
+	public function addReservas($id, $id_dentista, $data_inicio){	
+	
+	   	if($this->verificarDisponibilidade($data_inicio, $id_dentista)){
+
+		$sql = $this->pdo->prepare("INSERT reserva SET data_inicio = :data_inicio, data_fim = :data_fim, id_usuario = :id_usuario, id_dentista = :id_dentista");
 		$sql->bindValue(':id_usuario', $id);
+		$sql->bindValue(':id_dentista', $id_dentista);
 		$sql->bindValue(':data_inicio', $data_inicio);		
 		$sql->bindValue(':data_fim', date('Y-m-d H:i', strtotime($data_inicio.'+59 minutes')));
 		$sql->execute();	
@@ -72,7 +101,7 @@ class Reservas extends Conexao{
 
 	public function temReserva($id){
 
-		$sql = $this->pdo->prepare("SELECT * FROM reserva WHERE id_usuario = :id ORDER BY data_inicio ASC");
+		$sql = $this->pdo->prepare("SELECT reserva.*, funcionarios.nome FROM reserva LEFT JOIN funcionarios ON funcionarios.id = reserva.id_dentista WHERE id_usuario = :id ORDER BY data_inicio ASC");
 		$sql->bindValue(':id', $id);
 		$sql->execute(); 
 
@@ -94,7 +123,7 @@ class Reservas extends Conexao{
 		date_default_timezone_set('America/Sao_Paulo');	
 		$data_atual = date('Y-m-d H:i');			
 
-		$sql = $this->pdo->prepare("SELECT reserva.id, reserva.id_usuario, reserva.data_inicio, reserva.data_fim, reserva.confirmado, usuarios.nome, usuarios.telefone FROM reserva  INNER JOIN usuarios ON reserva.id_usuario = usuarios.id WHERE (NOT (data_inicio > :data_atual)) ORDER BY reserva.data_inicio ASC");
+		$sql = $this->pdo->prepare("SELECT reserva.id, reserva.id_usuario, reserva.data_inicio, reserva.data_fim, reserva.confirmado, usuarios.nome, usuarios.telefone, (funcionarios.nome) as doutor FROM reserva  INNER JOIN usuarios ON reserva.id_usuario = usuarios.id LEFT JOIN funcionarios ON reserva.id_dentista = funcionarios.id WHERE (NOT (data_inicio > :data_atual)) ORDER BY reserva.data_inicio ASC");
 		$sql->bindValue(':data_atual', date('Y-m-d H:i', strtotime($data_atual.'+1 day +4 hours')));
 		$sql->execute();
 		
@@ -125,5 +154,19 @@ class Reservas extends Conexao{
 		$sql->execute(); 
 
 		return true; 
+	}
+
+	public function allHorariosDia($data_inicio){
+		$dados = array();	
+
+		$sql = $this->pdo->query("SELECT reserva.data_inicio, reserva.data_fim, funcionarios.nome as dentista, usuarios.nome as paciente FROM reserva LEFT JOIN funcionarios ON funcionarios.id = reserva.id_dentista LEFT JOIN usuarios ON usuarios.id = reserva.id_usuario where DATE(data_inicio) = DATE('$data_inicio') ORDER BY reserva.data_inicio ASC");
+		//$sql->bindValue(':data_inicio', date('Y-m-d', strtotime($data_inicio)));
+		//$sql->execute();
+
+		if($sql->rowCount() > 0){
+			$dados = $sql->fetchAll();				
+		} 
+
+		return $dados;		
 	}
 }

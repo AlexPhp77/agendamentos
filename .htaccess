@@ -6,4 +6,4 @@ RewriteCond %{REQUEST_FILENAME} !-f
 
 RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule ^(.*)$ /sistemas/agendamentos/index.php?url=$1 [QSA,L]
+RewriteRule ^(.*)$ /agenda_new/index.php?url=$1 [QSA,L]

@@ -7,6 +7,7 @@ class pacienteController extends controller{
 		$dados = array();
 		
 		$u = new Usuarios();
+		$f = new Funcionarios();
 		$r = new Reservas(); 
 
 
@@ -26,6 +27,7 @@ class pacienteController extends controller{
 
 			$nomecompleto = addslashes($_POST['nome']);			
 			$idade = addslashes($_POST['idade']);
+			$sexo = addslashes($_POST['sexo']);
 			$cpf = addslashes($_POST['cpf']);
 			$email = addslashes($_POST['email']);
 			$telefone = addslashes($_POST['telefone']);			
@@ -36,7 +38,7 @@ class pacienteController extends controller{
 			$numero = addslashes($_POST['numero']);
 			$id = addslashes($_GET['id']);            
 
-			$u->infoAllEditar($nomecompleto, $idade, $cpf, $email, $telefone, $estado, $cidade, $cep, $rua, $numero, $id);          
+			$u->infoAllEditar($nomecompleto, $idade, $sexo, $cpf, $email, $telefone, $estado, $cidade, $cep, $rua, $numero, $id);          
 		}		       
 
 		if(isset($id) && !empty($id)){
@@ -50,31 +52,27 @@ class pacienteController extends controller{
         $msg = '';
         $msg2 = '';
         $msg3 = '';
-		if(isset($_POST['data']) && !empty($_POST['data'])){
+		if(isset($_POST['data']) && !empty($_POST['data']) && !empty($_POST['doutor'])){
 		   
             $data = addslashes($_POST['data']);
 			$hora = addslashes($_POST['hora']); 
-
-			date_default_timezone_set('America/Sao_Paulo'); 
+			$id_dentista = addslashes($_POST['doutor']);
+			
+			$data_atual = date('Y-m-d H:i');
 			
 			$m = date('m');
 			$Y = date('Y');  		 
 			$data_inicio = $Y."-".$m."-".$data." ".$hora;
-		
-			$data_atual = date('Y-m-d H:i');
 			
-			echo "data inicio:";
-			print_r($data_inicio);
-			echo '<br/>Data atual:';
-			echo ($data_atual);
-           
+			date_default_timezone_set('America/Sao_Paulo');
+			
 			if(date('Y-m-d H:i', strtotime($data_inicio)) >= $data_atual){				
 
-				if($false = $r->verificarDisponibilidade($data_inicio) == false){
+				if($r->verificarDisponibilidade($data_inicio, $id_dentista) == false){
 			        $msg2 = "Já existe consulta marcada para esse horário!";
 			    } 
 
-			    if($r->addReservas($id, $data_inicio) == true){
+			    if($r->addReservas($id, $id_dentista, $data_inicio) == true){
 					$msg3 = "Consulta marcada com sucesso!";					
 				}
 
@@ -88,6 +86,7 @@ class pacienteController extends controller{
         	$dados = array(
 			'nome' => $dado['nome'],			
 			'idade' => $dado['idade'],
+			'sexo' => $dado['sexo'],			
 			'cpf' => $dado['cpf'],
 			'email' => $dado['email'],
 			'telefone' => $dado['telefone'],
@@ -100,7 +99,8 @@ class pacienteController extends controller{
 			'm' => $msg,	
 			'm2'=> $msg2,
 			'm3' => $msg3,
-			'permissao' => $permissoes = $u->permissoes()	
+			'permissao' => $permissoes = $u->permissoes(),
+			'funcionarios' => $f->getFuncionarios()
 			
 		    );
         }	      

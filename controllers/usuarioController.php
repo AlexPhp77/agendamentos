@@ -67,13 +67,13 @@ class usuarioController extends controller{
 			$data_atual = date('Y-m-d H:i');
 		  
            
-			if($data_inicio >= $data_atual){				
+			if(date('Y-m-d H:i', strtotime($data_inicio)) >= $data_atual){		
 
 				if($false = $r->verificarDisponibilidade($data_inicio) == false){
 			        $msg2 = "Já existe consulta marcada para esse horário!";
 			    } 
 
-			    if($r->addReservas($id, $data_inicio)){
+			    if($r->addReservas($id, $data_inicio) == true){
 					$msg3 = "Consulta marcada com sucesso!";					
 				}
 
@@ -86,7 +86,7 @@ class usuarioController extends controller{
 		    $id_reserva = addslashes($_GET['id_reserva']);
 
 		    if($r->deletarReserva($id, $id_reserva)){
-		       echo "<meta HTTP-EQUIV='refresh' CONTENT='0'>";
+		       echo "<meta http-equiv='refresh'>";
 		    }
 		}	
        

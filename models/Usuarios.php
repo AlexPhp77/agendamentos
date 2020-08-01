@@ -3,10 +3,12 @@ class Usuarios extends Conexao{
 
 	private $nomecompleto;
 	private $idade;	
+	private $sexo;	
 	private $cpf;
 	private $email;
 	private $telefone;
 	private $senha;
+	private $nivelacesso; 
 	private $estado;
 	private $cidade;
 	private $cep;
@@ -14,14 +16,16 @@ class Usuarios extends Conexao{
 	private $numero;
 	private $id; 
 
-    public function infoAllCadastrar($nomecompleto, $idade, $cpf, $email, $telefone, $senha, $estado, $cidade, $cep, $rua, $numero){
+    public function infoAllCadastrar($nomecompleto, $idade, $sexo, $cpf, $email, $telefone, $senha, $estado, $cidade, $cep, $rua, $numero, $nivelacesso){
 
     	$this->setNome($nomecompleto);
     	$this->setIdade($idade);
+    	$this->setSexo($sexo);
     	$this->setCpf($cpf);
     	$this->setEmail($email);
     	$this->setFone($telefone);
         $this->setSenha($senha);
+        $this->setPermissoes($nivelacesso);
 
     	$this->setEstado($estado);
     	$this->setCidade($cidade);
@@ -38,12 +42,13 @@ class Usuarios extends Conexao{
 
     	
     }
-    public function infoAllEditar($nomecompleto, $idade, $cpf, $email, $telefone, $estado, $cidade, $cep, $rua, $numero, $id){
+    public function infoAllEditar($nomecompleto, $idade, $sexo, $cpf, $email, $telefone, $estado, $cidade, $cep, $rua, $numero, $id){
 
     	$this->id = $id; 
 
     	$this->setNome($nomecompleto);
     	$this->setIdade($idade);
+    	$this->setSexo($sexo);
     	$this->setCpf($cpf);
     	$this->setEmail($email);
     	$this->setFone($telefone);
@@ -66,6 +71,20 @@ class Usuarios extends Conexao{
 	}
 	private function setIdade($idade){
 		$this->idade = $idade;
+	}
+	private function setSexo($sexo){
+		if($sexo = filter_var($sexo, FILTER_SANITIZE_STRING)){
+			if($sexo == 'Masculino' or $sexo == 'Feminino'){
+				$this->sexo = $sexo; 
+			}
+		} 
+	}
+	private function setPermissoes($nivelacesso){
+		if($nivelacesso = filter_var($nivelacesso, FILTER_SANITIZE_STRING)){
+			if($nivelacesso == 'DOUTOR' or $nivelacesso == 'SECRETARIO'){
+				$this->nivelacesso = $nivelacesso; 
+			}
+		} 
 	}
 	private function setCpf($cpf){
 		$this->cpf = $cpf;
@@ -122,6 +141,20 @@ class Usuarios extends Conexao{
     	}
 
     }
+    public function verificarCpf(){	
+
+    	$sql = "SELECT * FROM usuarios WHERE cpf = :cpf";
+    	$sql = $this->pdo->prepare($sql);
+    	$sql->bindValue(':cpf', $this->cpf);
+    	$sql->execute();
+
+    	if($sql->rowCount() > 0){
+    		return false;
+    	} else{
+    		return true;
+    	}
+
+    }
     public function permissoes(){  
 
 	        if(isset($_SESSION['logado'])){       
@@ -139,41 +172,47 @@ class Usuarios extends Conexao{
     }    
     private function cadastrar(){    	
 
-    	if($this->verificarEmail() && $this->setSenha($this->senha) && $this->setNumero($this->numero)){
+    	if($this->verificarEmail()){
 
-	    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = md5(trim(:senha))");	    	
-	    	$sql->bindValue(':nome', str_replace('  ', '', $this->nomecompleto));    	
-	    	$sql->bindValue(':idade', $this->idade);
-	    	$sql->bindValue(':cpf',  str_replace(' ', '', $this->cpf));  
-	    	$sql->bindValue(':email', $this->email);   	
-	    	$sql->bindValue(':telefone', str_replace(' ', '', $this->telefone));
-	    	$sql->bindValue(':senha', $this->senha);
-	    	$sql->execute();
-	        
-	        /* Id da primeira inserção 
-	        Tabela endereço terá o id do usuário inserido*/
-	    	$id = $this->pdo->lastInsertId();
+    		if($this->verificarCpf()){
 
-	    	if($id > 0){
+		    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET permissoes = :permissoes, nome = trim(:nome), idade = trim(:idade), sexo = :sexo, cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = md5(trim(:senha))");	    	
+		    	$sql->bindValue(':nome', str_replace('  ', ' ', $this->nomecompleto));    	
+		    	$sql->bindValue(':idade', $this->idade);
+		    	$sql->bindValue(':sexo', $this->sexo);
+		    	$sql->bindValue(':cpf',  str_replace(' ', '', $this->cpf));  
+		    	$sql->bindValue(':email', $this->email);   	
+		    	$sql->bindValue(':telefone', str_replace(' ', '', $this->telefone));	    	
+		    	$sql->bindValue(':senha', $this->senha);
+		    	$sql->bindValue(':permissoes', $this->nivelacesso);
+		    	$sql->execute();
+		        
+		        /* Id da primeira inserção 
+		        Tabela endereço terá o id do usuário inserido*/
+		    	$id = $this->pdo->lastInsertId();
 
-		    	$sql = $this->pdo->prepare("INSERT INTO endereco SET id_usuario = :id_usuario, estado = trim(:estado), cidade = trim(:cidade), cep = trim(:cep), rua = trim(:rua), numero = trim(:numero)"); 
-		    	$sql->bindValue(':id_usuario', $id);
-		    	$sql->bindValue(':estado',  str_replace('  ', '', $this->estado)); 
-		    	$sql->bindValue(':cidade', str_replace('  ', '', $this->cidade)); 
-		    	$sql->bindValue(':cep', str_replace(' ', '', $this->cep)); 
-		    	$sql->bindValue(':rua', str_replace('  ', '', $this->rua)); 
-		    	$sql->bindValue(':numero', $this->numero);
-		    	$sql->execute();   
+		    	if($id > 0){
 
-		    	return true;   
-	    	}  	  
-    	} 
+			    	$sql = $this->pdo->prepare("INSERT INTO endereco SET id_usuario = :id_usuario, estado = trim(:estado), cidade = trim(:cidade), cep = trim(:cep), rua = trim(:rua), numero = trim(:numero)"); 
+			    	$sql->bindValue(':id_usuario', $id);
+			    	$sql->bindValue(':estado',  str_replace('  ', '', $this->estado)); 
+			    	$sql->bindValue(':cidade', str_replace('  ', '', $this->cidade)); 
+			    	$sql->bindValue(':cep', str_replace(' ', '', $this->cep)); 
+			    	$sql->bindValue(':rua', str_replace('  ', '', $this->rua)); 
+			    	$sql->bindValue(':numero', $this->numero);
+			    	$sql->execute();   
+
+			    	return true;   
+		    	} 
+	    	} 
+    	}  
 	}
 	private function editarPaciente(){
 
-		$sql = $this->pdo->prepare("UPDATE usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone) WHERE id = trim(:id)");
+		$sql = $this->pdo->prepare("UPDATE usuarios SET nome = trim(:nome), idade = trim(:idade), sexo = :sexo, cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone) WHERE id = trim(:id)");
     	$sql->bindValue(':nome', str_replace('  ', '', $this->nomecompleto));    	
     	$sql->bindValue(':idade', $this->idade);
+    	$sql->bindValue(':sexo', $this->sexo);
     	$sql->bindValue(':cpf',  str_replace(' ', '', $this->cpf));  
     	$sql->bindValue(':email', $this->email);   	
     	$sql->bindValue(':telefone', str_replace(' ', '', $this->telefone));
@@ -220,9 +259,18 @@ class Usuarios extends Conexao{
 	public function getUsuarios($inicio, $total_reg){		 
 
         $dados = array();
-		$sql = $this->pdo->query("SELECT id, nome, cpf, email, telefone, permissoes FROM usuarios ORDER BY nome ASC LIMIT $inicio , $total_reg");        
+		$sql = $this->pdo->query("SELECT id, nome, cpf, email, telefone FROM usuarios ORDER BY nome ASC LIMIT $inicio , $total_reg");        
         if($sql->rowCount() > 0){
-        	return $dados = $sql->fetchAll();
+        	$dados = $sql->fetchAll();
+        } return $dados; 
+	}
+
+	public function getPacientes(){		 
+
+        $dados = array();
+		$sql = $this->pdo->query("SELECT id, nome FROM usuarios ORDER BY nome ASC");        
+        if($sql->rowCount() > 0){
+        	$dados = $sql->fetchAll();
         } return $dados; 
 	}
 
@@ -268,7 +316,7 @@ class Usuarios extends Conexao{
 	public function pesquisar($texto){
 		$dados = array(); 
         /*Preciso melhorar pesquisa*/
-		$sql = $this->pdo->prepare("SELECT id, nome FROM usuarios WHERE nome LIKE :texto");
+		$sql = $this->pdo->prepare("SELECT id, nome FROM usuarios WHERE nome LIKE :texto OR cpf LIKE :texto OR email = :texto");
 		$sql->bindValue(':texto', "%".$texto."%");		
 		$sql->execute(); 
 
@@ -281,7 +329,7 @@ class Usuarios extends Conexao{
 
 	public function getPaciente($id){
         $dados = array();
-		$sql = $this->pdo->prepare("SELECT usuarios.id, usuarios.nome, usuarios.idade, usuarios.cpf, usuarios.email, usuarios.telefone, endereco.estado, endereco.cidade, endereco.cep, endereco.rua, endereco.numero FROM usuarios INNER JOIN endereco ON endereco.id_usuario = usuarios.id WHERE usuarios.id= :id");
+		$sql = $this->pdo->prepare("SELECT usuarios.id, usuarios.nome, usuarios.idade, usuarios.sexo, usuarios.cpf, usuarios.email, usuarios.telefone, endereco.estado, endereco.cidade, endereco.cep, endereco.rua, endereco.numero FROM usuarios INNER JOIN endereco ON endereco.id_usuario = usuarios.id WHERE usuarios.id= :id");
 		$sql->bindValue(':id', $id);
 		$sql->execute();
 
@@ -381,65 +429,3 @@ class Usuarios extends Conexao{
 }
 
 
-
-
-
-
-/*	//Defino a Chave do meu site
-$secret_key = '6Lf4GvMUAAAAALm0_jIrs20KFYpB_LOeAv8XJ4JB';
-
-//Pego a validação do Captcha feita pelo usuário
-$recaptcha_response = $_POST['g-recaptcha-response'];
-
-//Verifico se foi feita a postagem do Captcha 
-if(isset($recaptcha_response)){
-		
-	//Valido se a ação do usuário foi correta junto ao google
-	$answer = 
-		json_decode(
-			file_get_contents(
-				'https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.
-				'&response='.$_POST['g-recaptcha-response']
-			)
-		);
-
-	//Se a ação do usuário foi correta executo o restante do meu formulário
-	if($answer->success) {		
-
-		if($this->verificarEmail() && $this->setSenha($this->senha) && $this->setNumero($this->numero)){
-
-    	$sql = $this->pdo->prepare("INSERT INTO usuarios SET nome = trim(:nome), idade = trim(:idade), cpf = trim(:cpf), email = trim(:email), telefone = trim(:telefone), senha = md5(trim(:senha))");	    	
-    	$sql->bindValue(':nome', str_replace('  ', '', $this->nomecompleto));    	
-    	$sql->bindValue(':idade', $this->idade);
-    	$sql->bindValue(':cpf',  str_replace(' ', '', $this->cpf));  
-    	$sql->bindValue(':email', $this->email);   	
-    	$sql->bindValue(':telefone', str_replace(' ', '', $this->telefone));
-    	$sql->bindValue(':senha', $this->senha);
-    	$sql->execute();
-        
-        Id da primeira inserção 
-        Tabela endereço terá o id do usuário inserido
-    	$id = $this->pdo->lastInsertId();
-
-    	if($id > 0){
-
-	    	$sql = $this->pdo->prepare("INSERT INTO endereco SET id_usuario = :id_usuario, estado = trim(:estado), cidade = trim(:cidade), cep = trim(:cep), rua = trim(:rua), numero = trim(:numero)"); 
-	    	$sql->bindValue(':id_usuario', $id);
-	    	$sql->bindValue(':estado',  str_replace('  ', '', $this->estado)); 
-	    	$sql->bindValue(':cidade', str_replace('  ', '', $this->cidade)); 
-	    	$sql->bindValue(':cep', str_replace(' ', '', $this->cep)); 
-	    	$sql->bindValue(':rua', str_replace('  ', '', $this->rua)); 
-	    	$sql->bindValue(':numero', $this->numero);
-	    	$sql->execute();   
-
-	    	return true;   
-
-	    } else {
-				$m = "Por favor, faça a verificação do captcha abaixo!";
-				return $m; 
-			}
-		}	
-    }   
-}   
-
-*/

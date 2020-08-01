@@ -6,7 +6,7 @@ class loginController extends controller{
 
 		$dados = array();	
 
-		$u = new Usuarios();
+		$u = new Funcionarios();
 
 		if(isset($_POST['email']) && !empty($_POST['senha'])){
 

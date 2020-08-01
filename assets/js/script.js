@@ -1,10 +1,11 @@
 $(function(){
 
-	$('#busca').on('keyup', function(){
-		var texto = $.trim($(this).val());
+	$('#busca').on('keyup', function(){		
+		
+		var texto = $.trim($(this).val());	
         
 		$.ajax({
-			url:'http://localhost/sistemas/agendamentos/ajax',
+			url:'http://localhost/agenda/ajax',
 			type:'POST',
 			data:{busca:texto},
 			success:function(html){
@@ -17,3 +18,4 @@ $(function(){
 	$('#telefone').mask('(00) 00000-0000');
 	$('#cpf').mask('000.000.000-00', {reverse: true});
 });
+
