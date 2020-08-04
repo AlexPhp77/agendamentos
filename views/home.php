@@ -37,12 +37,9 @@
 			            <input class="form-control" type="color" id="cores" name="cor" list="arcoIris" value="#FF0000">
 						<datalist id="arcoIris">
 						<option value="#FF0000">Vermelho</option>
-						<option value="#FFA500">Laranja</option>
-						<option value="#FFFF00">Amarelo</option>
+						<option value="#FFA500">Laranja</option>						
 						<option value="#008000">Verde</option>
-						<option value="#0000FF">Azul</option>
-						<option value="#4B0082">Indigo</option>
-						<option value="#EE82EE">Violeta</option>
+						<option value="#000000">Preto</option>			
 						</datalist>
 
 			      </label>
@@ -83,20 +80,30 @@
 	</div>
 	</div>
 
-	<div class="container">  
-		    <hr/>
-		    <div class='row align-items-center '>
-		        <div class='col-md-10'>
-		        	<h5 style="color:#17a2b8;">ÁREA RESTRITA</h5>
-    		    </div>
-    		    <div style='float: right;' class='col'>
+	<div class="container"> 
 
-                    <!-- Button trigger modal -->
-				    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-				       <img width="90px" src='<?php echo BASE_URL; ?>assets/images/add-paciente.svg'>
-				    </button>
-    		        
-    		    </div>
+		    <hr/>
+		    <div class='botoes d-flex bd-highlight justify-content-end'>
+
+		    	<!-- Button modal -->
+			    <a href="<?php echo BASE_URL; ?>lista">
+			    	<button type="button" class="btn btn-primary" data-toggle="modal">
+			        <img width="90px" src='<?php echo BASE_URL; ?>assets/images/lista.svg'>
+			        </button> 
+			    </a>
+
+		    	<!-- Button modal -->
+			    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+			       <img width="90px" src='<?php echo BASE_URL; ?>assets/images/add-paciente.svg'>
+			    </button>
+
+                <!-- Button modal -->
+			    <a href="<?php echo BASE_URL; ?>config">
+			    	<button type="button" class="btn btn-primary" data-toggle="modal">
+			        <img width="90px" src='<?php echo BASE_URL; ?>assets/images/engrenagem.svg'>
+			        </button> 
+			    </a>
+
 		    </div>
 		    <hr/>
 

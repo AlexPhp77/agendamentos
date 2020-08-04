@@ -2,6 +2,123 @@
 
 class Reservas extends Conexao{
 
+	/*Refazendo partes do sistema*/
+	public function listarDatas(){
+
+		$sql = $this->pdo->query("SELECT * FROM reserva");  
+        $dados = array();
+
+        if($sql->rowCount() > 0){
+            $dados = $sql->fetchAll();
+            foreach ($dados as $dado) {
+
+                if($dado['all_day'] == 1){
+                    $start  = date('Y-m-d', strtotime($dado['data_inicio']));                
+                    $end =  date('Y-m-d', strtotime($dado['data_fim'])); 
+                } else{
+                    $start  = date('Y-m-d H:i', strtotime($dado['data_inicio']));               
+                    $end =  date('Y-m-d H:i', strtotime($dado['data_fim']));
+                }                
+
+                $dados[] = array(
+                'id' => $dado['id'],
+                'title' => $dado['titulo'], 
+                'display' => 'auto', /*opção background*/
+                'color' => $dado['cor'],    
+                'start' => $start,             
+                'end' =>  $end,                 
+                );
+            }           
+            echo json_encode($dados); 
+        } 
+	}
+
+	public function inserirDatas(){
+
+		if(isset($_POST['title'])){
+
+        date_default_timezone_set('America/Sao_Paulo'); 
+
+        if(!empty($_POST['allDay'])){
+               $allDay = $_POST['allDay'];  
+            if($allDay === 'true'){
+                $allDay = 1;
+            } elseif($allDay === 'false'){             
+                $allDay = 0;
+            }
+        } else{
+
+            $start = new DateTime(date('Y-m-d H:i:s'));
+            $end = new DateTime(date('Y-m-d H:i:s'));
+
+            $interval = $start->diff($end);
+            
+            if($interval > '0'){
+
+                $allDay = 1;   
+            } 
+        }
+
+        if(!empty($_POST['cor'])){
+            $cor = $_POST['cor'];
+        } else{
+            $cor = NULL;
+        }
+
+        $title = $_POST['title'];
+        $start = date('Y-m-d H:i', strtotime($_POST['start']));
+        $end = date('Y-m-d H:i', strtotime($_POST['end']));
+    }
+
+     echo $start."<br/>";
+    // echo $end."<br/>";  
+    // echo $allDay; 
+    //echo  $title;
+    //var_dump($start);
+
+    $sql = $this->pdo->prepare("INSERT INTO reserva SET titulo = :titulo, data_inicio = :data_inicio, data_fim = :data_fim, all_day = :allDay, cor = :cor");
+    $sql->bindValue(':titulo', $title);
+    $sql->bindValue(':data_inicio', $start);
+    $sql->bindValue(':data_fim', $end);
+    $sql->bindValue(':cor', $cor);
+    $sql->bindValue(':allDay', $allDay);
+    $sql->execute();        
+
+    header('Location: '.BASE_URL); 
+	}
+
+	public function atualizarDatas(){
+
+		// if(isset($_POST['title'])){
+
+	    date_default_timezone_set('America/Sao_Paulo'); 
+	    $title = $_POST['title'];
+	  
+	    $id = $_POST['id'];
+	    $start = date('Y-m-d H:i', strtotime($_POST['start']));
+	    $end = date('Y-m-d H:i', strtotime($_POST['end']));
+
+	    $sql = $this->pdo->prepare("UPDATE reserva SET data_inicio = :data_inicio, data_fim = :data_fim WHERE id = :id");
+	    $sql->bindValue(':id', $id);   
+	    $sql->bindValue(':data_inicio', $start);
+	    $sql->bindValue(':data_fim', $end);
+	    $sql->execute(); 
+	    
+	    // }       
+	}
+
+	public function excluirDatas(){
+
+		$id = $_POST['id'];
+	      
+	    //echo $id."<br/>";              
+
+	    $sql = $this->pdo->prepare("DELETE FROM reserva WHERE id = :id");
+	    $sql->bindValue(':id', $id);        
+	    $sql->execute();        
+	}
+
+    /**************************************************************/
 	public function getReservas(){
 
 		$dados = array();

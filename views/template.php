@@ -7,6 +7,9 @@
   <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>assets/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>assets/css/style.css">
   <link href='<?php echo BASE_URL; ?>assets/css/main.min.css' rel='stylesheet' />
+ 
+
+ 
 
   <title>Agenda</title>   
 
@@ -47,11 +50,16 @@
       </div>   
 
     <script type="text/javascript">var BASE_URL = '<?php echo BASE_URL; ?>';</script>
-  	<script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/jquery-3.4.1.min.js"></script> 
-    <script src='<?php echo BASE_URL; ?>assets/js/main.min.js'></script>
+  	<script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/jquery-3.4.1.min.js"></script>
+     <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/bootstrap.bundle.min.js"></script>
+      <script src='<?php echo BASE_URL; ?>assets/js/tabela.js'></script>
+      <script src='<?php echo BASE_URL; ?>assets/js/main.min.js'></script>
     <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/calendario.js"></script> 
     <script src='<?php echo BASE_URL; ?>assets/js/pt-br.js'></script>
-    <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/bootstrap.bundle.min.js"></script>
+
+ <script src='<?php echo BASE_URL; ?>assets/js/datatables.min.js'></script>
+
+   
     <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/jquery.mask.js"></script>
     <script type="text/javascript" src="<?php echo BASE_URL; ?>assets/js/script.js"></script>
 </body>

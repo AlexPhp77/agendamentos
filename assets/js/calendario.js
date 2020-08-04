@@ -10,8 +10,9 @@
     var calendar = new FullCalendar.Calendar(calendarEl, {
 
       height: '100%',
-      height: 'auto',
+     // height: 'auto',
       locale: 'pt-br',
+      contentHeight: 500,
       expandRows: true,      
       //eventResizableFromStart: true,
       //slotMinTime: '08:00',
@@ -49,6 +50,7 @@
       events: {
 
         url: BASE_URL+'home/listar_datas', 
+         
 
         failure: function() {         
 
@@ -64,7 +66,7 @@
       eventColor: 'red',
     
     eventDrop: function(info) {
-        alert(info.event.title + " was dropped on " + info.event.start.toISOString());
+        //alert(info.event.title + " Nova data " + info.event.start.toISOString());
 
       if (!confirm("Tem certeza que deseja atualizar?")) {
         info.revert();
@@ -91,7 +93,7 @@
     },   
 
      eventResize: function(info) {
-        alert(info.event.title + " was dropped on " + info.event.start.toISOString());
+       // alert(info.event.title + " was dropped on " + info.event.start.toISOString());
 
       if (!confirm("Tem certeza que deseja atualizar?")) {
         info.revert();
@@ -130,7 +132,7 @@
       var start = arg.start.toISOString();
       var end = arg.end.toISOString(); 
       var allDay = arg.allDay;       
-      console.log(allDay);
+     
       $.ajax({
         type:"POST",
         url: BASE_URL+'home/inserir_datas',
@@ -171,5 +173,9 @@
 
     });
 
-    calendar.render();    
+    if ($("#calendar").length){ 
+ 
+        calendar.render();  
+     
+    }   
   });

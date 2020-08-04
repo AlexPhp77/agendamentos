@@ -1,7 +1,7 @@
 <?php 
 
 try {
-	$pdo = new PDO("mysql:dbname=agenda;host=localhost", "root", "");	
+	$pdo = new PDO("mysql:dbname=agenda_clinica;host=localhost", "root", "");	
 } catch (PDOException $e) {
 	echo "Error: ".$e->getMessage();	
 }
