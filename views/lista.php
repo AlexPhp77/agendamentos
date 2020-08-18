@@ -1,7 +1,7 @@
 
 	<!--Calendário-->
 
- <?php echo '<pre>'; print_r($dados); 
+ <?php  echo '<pre>'; print_r($dados); 
  //var_dump($dados); ?>
 			 
 <table id="tabela" class="display" style="width:100%">

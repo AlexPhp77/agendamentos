@@ -129,22 +129,8 @@ class homeController extends controller{
 
     public function atualizar_datas(){
 
-    // if(isset($_POST['title'])){
-
-    date_default_timezone_set('America/Sao_Paulo'); 
-    $title = $_POST['title'];
-  
-    $id = $_POST['id'];
-    $start = date('Y-m-d H:i', strtotime($_POST['start']));
-    $end = date('Y-m-d H:i', strtotime($_POST['end']));
-
-    $sql = $this->pdo->prepare("UPDATE reserva SET data_inicio = :data_inicio, data_fim = :data_fim WHERE id = :id");
-    $sql->bindValue(':id', $id);   
-    $sql->bindValue(':data_inicio', $start);
-    $sql->bindValue(':data_fim', $end);
-    $sql->execute(); 
-    
-    // }       
+        $atualizar = new Reservas();
+        $atualizar->atualizarDatas();  
         
     }
 

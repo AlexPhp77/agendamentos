@@ -37,6 +37,10 @@ class Reservas extends Conexao{
 
 		if(isset($_POST['title'])){
 
+			 $title = $_POST['title'];
+        $start = date('Y-m-d H:i', strtotime($_POST['start']));
+        $end = date('Y-m-d H:i', strtotime($_POST['end']));
+
         date_default_timezone_set('America/Sao_Paulo'); 
 
         if(!empty($_POST['allDay'])){
@@ -48,16 +52,22 @@ class Reservas extends Conexao{
             }
         } else{
 
-            $start = new DateTime(date('Y-m-d H:i:s'));
-            $end = new DateTime(date('Y-m-d H:i:s'));
+        	$start = DateTime::createFromFormat('Y-m-d H:i', $start);
+        	$end = DateTime::createFromFormat('Y-m-d H:i', $end);
+
+          //  $start = new DateTime(date($start));
+          //  $end = new DateTime(date($end));
 
             $interval = $start->diff($end);
+
+            // $start->format('Y-m-d H:i');
+            //  $end->format('Y-m-d H:i');
             
-            if($interval > '0'){
+           if($interval > '0'){
 
                 $allDay = 1;   
             } 
-        }
+       }
 
         if(!empty($_POST['cor'])){
             $cor = $_POST['cor'];
@@ -65,12 +75,10 @@ class Reservas extends Conexao{
             $cor = NULL;
         }
 
-        $title = $_POST['title'];
-        $start = date('Y-m-d H:i', strtotime($_POST['start']));
-        $end = date('Y-m-d H:i', strtotime($_POST['end']));
+      
     }
 
-     echo $start."<br/>";
+    // echo $start."<br/>";
     // echo $end."<br/>";  
     // echo $allDay; 
     //echo  $title;
@@ -78,8 +86,14 @@ class Reservas extends Conexao{
 
     $sql = $this->pdo->prepare("INSERT INTO reserva SET titulo = :titulo, data_inicio = :data_inicio, data_fim = :data_fim, all_day = :allDay, cor = :cor");
     $sql->bindValue(':titulo', $title);
-    $sql->bindValue(':data_inicio', $start);
-    $sql->bindValue(':data_fim', $end);
+    if(is_object($start)){
+    	$sql->bindValue(':data_inicio',  $start->format('Y-m-d H:i'));
+    	$sql->bindValue(':data_fim',  $end->format('Y-m-d H:i'));
+    } else {
+        $sql->bindValue(':data_inicio', $start);
+        $sql->bindValue(':data_fim', $end);
+    }
+
     $sql->bindValue(':cor', $cor);
     $sql->bindValue(':allDay', $allDay);
     $sql->execute();        

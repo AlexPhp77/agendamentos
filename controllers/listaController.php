@@ -22,7 +22,7 @@ class listaController extends controller{
 		);
 	    }
 
-		json_encode($dados); 
+		$dados[] = json_encode($dados); 
 
              
         $this->loadTemplate('lista', $dados);
