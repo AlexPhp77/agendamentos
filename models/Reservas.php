@@ -52,18 +52,26 @@ class Reservas extends Conexao{
             }
         } else{
 
+
         	$start = DateTime::createFromFormat('Y-m-d H:i', $start);
         	$end = DateTime::createFromFormat('Y-m-d H:i', $end);
 
           //  $start = new DateTime(date($start));
           //  $end = new DateTime(date($end));
 
+
+            $start->format('Y-m-d H:i');
+            $end->format('Y-m-d H:i');
+
             $interval = $start->diff($end);
 
-            // $start->format('Y-m-d H:i');
-            //  $end->format('Y-m-d H:i');
+            //echo $interval->days;
+            //	exit; 
+
+           // print_r($interval);
+
             
-           if($interval > '0'){
+           if($interval->days > '0'){
 
                 $allDay = 1;   
             } 
