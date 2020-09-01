@@ -8,6 +8,7 @@
   <link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>assets/css/style.css">
   <link href='<?php echo BASE_URL; ?>assets/css/main.min.css' rel='stylesheet' />
 
+  <link href='<?php echo BASE_URL; ?>assets/css/dataTables.bootstrap4.min.css' rel='stylesheet' />
   <link href='<?php echo BASE_URL; ?>assets/css/datatables.min.css' rel='stylesheet' />
 
   <title>Agenda</title>   

@@ -10,7 +10,7 @@ if($_SESSION['seguranca'] != $token){
 	exit; 
 }
 
-require 'captcha/captcha.php';
+//require_once 'vendor/autoload.php';
 
 define('BASE_URL', 'http://localhost/agenda_new/');
 //define('BASE_URL', 'https://amostra.lalehub.com.br/agenda/');

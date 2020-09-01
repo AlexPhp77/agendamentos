@@ -107,7 +107,8 @@
           url: BASE_URL+'home/atualizar_datas', 
           data:{id:id,start:start,end:end,title:title},   
           success:function(msg){
-            console.log(msg);
+            alert("Atualizado com sucesso!");
+            //console.log(msg);
           },
           error:function(msg){
             console.log(msg);
@@ -138,7 +139,8 @@
         url: BASE_URL+'home/inserir_datas',
         data:{start:start,end:end,allDay:allDay,title:title},   
         success:function(msg){
-           calendar.refetchEvents();
+
+          calendar.refetchEvents();
         },
         error:function(msg){
           console.log(msg);

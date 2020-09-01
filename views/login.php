@@ -35,7 +35,7 @@
     <input type="text" name="codigo" class="form-control form-control-lg" id="codigo" placeholder="Insira o código">   
   </div> 
   <div class="form-group">
-    <img src="<?php echo BASE_URL; ?>./captcha/imagem.php">    
+    <img src="<?php echo BASE_URL; ?>captcha/imagem.php">    
   </div>
   <button type="submit" class="btn btn-info">Acessar</button>
 </form>

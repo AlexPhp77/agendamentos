@@ -10,7 +10,7 @@ class Conexao{
 		$config = array();
 
 		if(MEIO == 'developer'){
-			$config['dbname'] = 'agendamento_pacientes';
+			$config['dbname'] = 'agenda';
 			$config['host'] = 'localhost';
 			$config['dbuser'] = 'root';
 			$config['dbpass'] = '';

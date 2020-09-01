@@ -268,10 +268,21 @@ class Usuarios extends Conexao{
 	public function getPacientes(){		 
 
         $dados = array();
-		$sql = $this->pdo->query("SELECT id, nome FROM usuarios ORDER BY nome ASC");        
-        if($sql->rowCount() > 0){
-        	$dados = $sql->fetchAll();
-        } return $dados; 
+		$sql = $this->pdo->query("SELECT * FROM usuarios ORDER BY nome ASC");        
+		if($sql->rowCount() > 0){      
+
+	        $dados = array(
+
+	        'draw' => 1,
+	        'recordsTotal' => 6,
+	        'recordsFiltered' => 2,
+	        'data' => $sql->fetchAll()
+	        );  
+        }  
+
+        echo json_encode($dados);
+        //return $dados; 
+
 	}
 
 	public function deletar($id){
