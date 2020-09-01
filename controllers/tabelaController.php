@@ -6,8 +6,8 @@ class tabelaController extends controller{
 
 		$dados = array(); 
 
-		$users = new User();
-		$dados = $users->getUsers();
+		$users = new Usuarios();
+		$dados = $users->getPacientes();
 
 		echo json_encode($dados);
 

@@ -267,21 +267,26 @@ class Usuarios extends Conexao{
 
 	public function getPacientes(){		 
 
-        $dados = array();
-		$sql = $this->pdo->query("SELECT * FROM usuarios ORDER BY nome ASC");        
-		if($sql->rowCount() > 0){      
+       $dados = array();
 
-	        $dados = array(
+		$sql = $this->pdo->query("SELECT nome,idade,sexo,cpf,email, telefone FROM usuarios ORDER BY nome ASC");   
+
+		$qtregistros = $sql->rowCount(); 
+
+   
+		if($sql->rowCount() > 0){    
+		       
+
+	       $dados = array(
 
 	        'draw' => 1,
-	        'recordsTotal' => 6,
-	        'recordsFiltered' => 2,
+	        'recordsTotal' => $qtregistros,
+	        'recordsFiltered' => 12,
 	        'data' => $sql->fetchAll()
 	        );  
-        }  
+		}  
 
-        echo json_encode($dados);
-        //return $dados; 
+		return $dados;
 
 	}
 
