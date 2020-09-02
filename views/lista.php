@@ -9,17 +9,18 @@
             <th>CPF</th>
             <th>E-mail</th> 
             <th>Telefone</th>
+            <th>Ações</th>
         </tr>
-    </thead>
+    </thead>   
     <tfoot>
-        <tr>
-           
+        <tr>           
             <th>Nome</th>
             <th>Idade</th>
             <th>Sexo</th>
             <th>CPF</th>
             <th>E-mail</th> 
             <th>Telefone</th>
+            <th>Ações</th>
         </tr>
     </tfoot>
 </table>    

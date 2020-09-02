@@ -27,7 +27,10 @@ class User{
 	        'draw' => 1,
 	        'recordsTotal' => $qtregistros,
 	        'recordsFiltered' => 12,
-	        'data' => $sql->fetchAll()
+	        'data' => array(
+                    $sql->fetchAll(),
+                    "acoes"
+                )
 	        );  
 		}  
 

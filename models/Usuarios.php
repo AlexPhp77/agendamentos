@@ -281,7 +281,7 @@ class Usuarios extends Conexao{
 
 	        'draw' => 1,
 	        'recordsTotal' => $qtregistros,
-	        'recordsFiltered' => 12,
+	        'recordsFiltered' => 12,	       
 	        'data' => $sql->fetchAll()
 	        );  
 		}  

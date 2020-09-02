@@ -6,6 +6,11 @@ $(document).ready(function(){
 		  'ajax': {
 		      'url': BASE_URL+'tabela'
 		  },
+		   "columnDefs": [ {
+            "targets": -1,
+            "data": null,
+            "defaultContent": "<div class='icones-tabela'><img src='./assets/images/editar-icone.svg'><img src='./assets/images/lixeira.svg'></div>"
+        } ],		
 		  'language':{
 		    "sEmptyTable": "Nenhum registro encontrado",
 		    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -45,4 +50,7 @@ $(document).ready(function(){
 		    }
 		}	
    });
+
+	
 });
+
