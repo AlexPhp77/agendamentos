@@ -21,7 +21,9 @@ class pacienteController extends controller{
 		    $r->deletarReserva($id, $id_reserva);
 		}
 
-		$aviso = $r->temReserva($id);     		
+		$aviso = $r->temReserva($id);     	
+
+			
        
 		if(!empty($_POST['nome']) && !empty($_POST['cpf'])){
 

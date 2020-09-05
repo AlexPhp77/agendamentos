@@ -269,7 +269,7 @@ class Usuarios extends Conexao{
 
        $dados = array();
 
-		$sql = $this->pdo->query("SELECT nome,idade,sexo,cpf,email, telefone FROM usuarios ORDER BY nome ASC");   
+		$sql = $this->pdo->query("SELECT nome,idade,sexo,cpf,email, telefone, id FROM usuarios ORDER BY nome ASC");   
 
 		$qtregistros = $sql->rowCount(); 
 
@@ -355,6 +355,8 @@ class Usuarios extends Conexao{
 		} else{
 			return $dados; 
 		}
+
+
 	}	
 
 	public function recuperarSenha(){

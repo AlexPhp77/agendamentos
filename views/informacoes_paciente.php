@@ -3,7 +3,7 @@
 
 
 if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'])){
-  unset($_SESSION['logadoFuncionario']);
+  //unset($_SESSION['logado']);
   ?>
   <script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>./"</script>
   <?php
@@ -184,7 +184,9 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
       </form>
   </div>
   <hr/>    
-  </div> 
+  </div>
+
+<?php if(!empty($aviso)): ?>   
 
 <?php if($aviso['aviso'] == true): ?>
     <?php for($i=0; $i < count($aviso['horas']); $i++): ?>   
@@ -203,6 +205,7 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
     <?php endfor; ?>
 <?php endif; ?>
 
+<?php endif; ?>
 
   <!--<?php /*if($aviso['aviso'] == true): ?>
     <div id="aviso-reserva" class="alert alert-success" role="alert">

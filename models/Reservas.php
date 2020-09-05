@@ -239,14 +239,14 @@ class Reservas extends Conexao{
 	}
 
 	public function temReserva($id){
-
+        $dados = array();
 		$sql = $this->pdo->prepare("SELECT reserva.*, funcionarios.nome FROM reserva LEFT JOIN funcionarios ON funcionarios.id = reserva.id_dentista WHERE id_usuario = :id ORDER BY data_inicio ASC");
 		$sql->bindValue(':id', $id);
 		$sql->execute(); 
 
 		if($sql->rowCount() > 0){
 			$dados = $sql->fetchAll();
-			return $dados = array(
+			$dados = array(
 			    'horas' => $dados, 				
 				'aviso' => true 
 			);
@@ -254,6 +254,7 @@ class Reservas extends Conexao{
 		} else{
 			return false; 
 		}
+		return $dados; 
 	}
 
 	public function avisoConsultas(){

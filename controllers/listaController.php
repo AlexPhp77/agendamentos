@@ -1,18 +1,18 @@
 <?php 
 
-class listaController extends controller{	
+class listaController extends controller{
 	
 	public function index(){
 		
-        $dados = array();
+        $dados = array(); 
 
-        //$get = new Usuarios();      
+        $users = new Usuarios();
+		$dados = $users->getPacientes();  
 
-        //$dados = $get->getPacientes();     
-
-		//json_encode($dados); 
-             
-        $this->loadTemplate('lista', $dados);
-        //$this->loadView('lista', $dados); 	
+		if(isset($_SESSION['logadoFuncionario'])){
+			 $this->loadTemplate('lista', $dados);
+		} else{
+			header('Location: '.BASE_URL.'login');
+		} 
 	}
 }

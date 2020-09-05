@@ -2,16 +2,18 @@
 
 class tabelaController extends controller{
 
-	public function index(){
+	
+	public function index(){		
 
 		$dados = array(); 
 
 		$users = new Usuarios();
 		$dados = $users->getPacientes();
 
-		echo json_encode($dados);
-
-		$this->loadView('tabela', $dados); 	
+		if(isset($_SESSION['logadoFuncionario'])){
+			echo json_encode($dados);	
+		} else{
+			header('Location: '.BASE_URL.'login');
+		}			
 	}
 }
-//preciso usar um viu sem html só com json 

@@ -1,16 +1,16 @@
 $(document).ready(function(){
-		$('#example').DataTable({
+		var table = $('#example').DataTable({
 		  'processing': true,     
 		  'type': 'POST',
 		  'dataType':'JSON',
-		  'ajax': {
-		      'url': BASE_URL+'tabela'
-		  },
+		  'ajax': {		    
+		          'url': BASE_URL+'tabela',
+		},
 		   "columnDefs": [ {
-            "targets": -1,
-            "data": null,
-            "defaultContent": "<div class='icones-tabela'><img src='./assets/images/editar-icone.svg'><img src='./assets/images/lixeira.svg'></div>"
-        } ],		
+	        "targets": -1,
+	        "data": null,
+	        "defaultContent": "<div  class='icones-tabela'><img src='./assets/images/editar-icone.svg'><img src='./assets/images/lixeira.svg'></div>"
+        }],		
 		  'language':{
 		    "sEmptyTable": "Nenhum registro encontrado",
 		    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -50,6 +50,11 @@ $(document).ready(function(){
 		    }
 		}	
    });
+
+		 $('#example tbody').on( 'click', 'img', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        alert( data[0] +"'s salary is: "+ data[ 6 ] );
+    } );
 
 	
 });
