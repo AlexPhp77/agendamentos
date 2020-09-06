@@ -9,7 +9,7 @@ $(document).ready(function(){
 		   "columnDefs": [ {
 	        "targets": -1,
 	        "data": null,
-	        "defaultContent": "<div  class='icones-tabela'><img src='./assets/images/editar-icone.svg'><img src='./assets/images/lixeira.svg'></div>"
+	        "defaultContent": "<div class='icones-tabela'><img class='img1' src='./assets/images/editar-icone.svg'><img data-toggle='modal' data-target='#exampleModalCenter' class='img2' src='./assets/images/lixeira.svg'></div>"
         }],		
 		  'language':{
 		    "sEmptyTable": "Nenhum registro encontrado",
@@ -51,11 +51,24 @@ $(document).ready(function(){
 		}	
    });
 
-		 $('#example tbody').on( 'click', 'img', function () {
+	$('#example tbody').on( 'click', 'img.img1', function () {
         var data = table.row( $(this).parents('tr') ).data();
-        alert( data[0] +"'s salary is: "+ data[ 6 ] );
-    } );
+            window.open(BASE_URL+'paciente/?id='+data[6], '_self');
+        //alert( data[0] +"'s salary is: "+ data[ 6 ] );
+    });
 
-	
+
+	$('#example tbody').on( 'click', 'img.img2', function () {
+        var data = table.row( $(this).parents('tr') ).data();   
+
+        $('#usuarioid').val(data[6]);
+
+        //document.write('<form method="POST"><input type="hidden" value='+data[6]+' name="id"></form>');
+       
+       // preciso adicionar um value em um input oculto no modal 
+            
+       // window.open(BASE_URL+'paciente/deletar/?id_usuario='+data[6], '_self');          
+       // alert( data[0] +"'s salary is: "+ data[ 6 ] );
+    });	
 });
 

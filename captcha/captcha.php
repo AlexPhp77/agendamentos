@@ -1,5 +1,5 @@
 <?php 
-session_start();
+//session_start();
 
 if(!isset($_SESSION['captcha'])){ // se sessão não existir irá gerar código
   $n = rand(1000, 9999);

@@ -159,7 +159,7 @@ class Usuarios extends Conexao{
 
 	        if(isset($_SESSION['logado'])){       
 	        
-	    	$sql = $this->pdo->prepare('SELECT permissoes FROM usuarios WHERE id = :id');
+	    	$sql = $this->pdo->prepare('SELECT permissoes FROM funcionarios WHERE id = :id');
 	        $sql->bindValue(':id', $_SESSION['logado']);
 	        $sql->execute();        
 
@@ -292,9 +292,10 @@ class Usuarios extends Conexao{
 
 	public function deletar($id){
 
-        $dados = $this->permissoes(); 
+        //$dados = $this->permissoes(); 
 
-		if($dados['permissoes'] == 'ADMINISTRADOR'){		
+
+		if(1==1 /*$dados['permissoes'] == 'SECRETARIO'*/){		
 
 	    	$sql = $this->pdo->prepare('DELETE FROM reserva WHERE id_usuario = :id');
 	    	$sql->bindValue(':id', $id);

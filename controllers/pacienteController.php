@@ -9,8 +9,7 @@ class pacienteController extends controller{
 		$u = new Usuarios();
 		$f = new Funcionarios();
 		$r = new Reservas(); 
-
-
+       
 		$id = '';
 		if(isset($_GET['id']) && !empty($_GET['id'])){
 			$id = addslashes($_GET['id']);
@@ -46,7 +45,7 @@ class pacienteController extends controller{
 		if(isset($id) && !empty($id)){
 			$dados = $u->getPaciente($id);
 		} else{
-			$id_usuario = addslashes($_GET['id_usuario']);
+			$id_usuario = addslashes($_POST['id_usuario']);
 			$dados = $u->getPaciente($id_usuario);
 			$u->deletar($id_usuario);
 		}
