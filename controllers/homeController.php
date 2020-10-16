@@ -70,28 +70,29 @@ class homeController extends controller{
             $data = addslashes($_POST['data']);
             $hora = addslashes($_POST['hora']); 
             $id_dentista = addslashes($_POST['doutor']);
-            $id = addslashes($_POST['paciente_id']);
-
-            date_default_timezone_set('America/Sao_Paulo');
             
             $data_atual = date('Y-m-d H:i');
-
-            $data_inicio = $data." ".$hora;
             
-            if(date('Y-m-d H:i', strtotime($data_inicio)) >= date('Y-m-d H:i', strtotime($data_atual))){              
+            $m = date('m');
+            $Y = date('Y');          
+            $data_inicio = $Y."-".$m."-".$data." ".$hora;
+            
+            date_default_timezone_set('America/Sao_Paulo');
+            
+            if(date('Y-m-d H:i', strtotime($data_inicio)) >= $data_atual){              
 
                 if($r->verificarDisponibilidade($data_inicio, $id_dentista) == false){
-                    $msg2 = "Já existe consulta marcada para esse horário!";
+                    $msg2 = "Já existe um serviço marcado para esse horário. Por favor, escolha outro!";
                 } 
 
                 if($r->addReservas($id, $id_dentista, $data_inicio) == true){
-                    $msg3 = "Consulta marcada com sucesso!";                    
+                    $msg3 = "Horário reservado com sucesso!";                   
                 }
 
             } else{
                 $msg = "Hora inválida!";
             }
-        }       
+        }                 
        
 
 		$dados = array(
@@ -106,7 +107,8 @@ class homeController extends controller{
             'pacientes' => $u->getPacientes(),
             'm' => $msg,    
             'm2'=> $msg2,
-            'm3' => $msg3,           
+            'm3' => $msg3,
+            'qtAvisos' =>  $r->getqtavisos()          
            
             
 			
@@ -138,5 +140,5 @@ class homeController extends controller{
 
         $excluir = new Reservas();
         $excluir->excluirDatas();       
-    }
+    }   
 }

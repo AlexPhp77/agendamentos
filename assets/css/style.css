@@ -1,11 +1,10 @@
 html, body{
    margin: 0px;
    padding: 0px; 
-   height: 100vh;
-   padding-top: 28px;
-   height: 100%;
-
-  
+   background-color: #000;  
+}
+.homefrente{
+  background-color: #000;
 }
 #calendar {
   display: flex;
@@ -33,20 +32,32 @@ html, body{
 .carousel-item p{
 	font-size: 22px;
 }
+.cor-menu a{
+  color: #daa520;
+}
 footer{
 	padding: 20px;
-	background-color:#17a2b8;
+  color:#daa520;
+	background-color:#111111;
 
 }
 .reservar{
   display: none;
 }
 .fundo{
-  background-color: #3a7fd5; 
-  min-height: 100vh; 
+  background-color: #000000; 
+
 }
 .form-control-lg{
+  border: 1px solid #daa520;
   min-width: 100px;
+   background-color: #111111;
+}
+.cor-texto-form{
+   color: #daa520;
+}
+.cor-texto-form a{
+   color: #555;
 }
 #arcoIris{
    -webkit-appearance: none;  /* Remove estilo padrão do Chrome */
@@ -58,7 +69,10 @@ footer{
   height: 20px;
   border-radius: 100%; 
 }
-.botoes button{
+.botoes{
+   overflow: auto;
+}
+.botoes button{  
   margin-left: 10px;
 }
 .icones-tabela{
@@ -70,17 +84,53 @@ footer{
   cursor: pointer;
   height: 100%; 
 }
+.celular{
+  display: none;
+}
+.slide-textos {
+    max-width: 1600px;     
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.fixed-bottom {
+    position: static;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1030;
+}
+element.style {
+    margin-top: 0px;
+}
 
 @media(max-width:700px){
-  footer{    
-    display: none;
-  } 
-  .imagem-fundo{
+   
+  .ocultar{
     display: none;
   }
-  .imagem-fundo{
+  .celular{
+    display: block;
+  }
+  .fc-scrollgrid-sync-inner {
+    overflow: auto;
+    width: 100%;
+  }
+  .fc-header-toolbar{
+    overflow: auto;
+  }
+  .direitos{
     display: none;
   }
+  .carousel-fade{
+    display: none;
+  }  
+  .fc-toolbar-title{
+    min-width: 200px;
+    overflow: hidden;
+  }
+  
 }
 
 

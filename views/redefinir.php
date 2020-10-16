@@ -7,7 +7,7 @@
 <?php if(!$codigo == false){  ?>
 
 <div class="container">
-  <form method="POST">
+  <form method="POST" style="color: #daa520;">
   <?php if(!empty($m)): ?>  
     <div class="alert alert-warning" style="margin-top: 10px;">
       <?php echo $m; ?>
@@ -26,7 +26,7 @@
     <label for="senha">Digite sua senha novamente</label>
     <input type="password" name="senha2" class="form-control form-control-lg" id="senha2" placeholder="Sua senha deve ter 8 ou mais caracteres">
   </div>  
-  <button type="submit" class="btn btn-info">Alterar Senha</button>
+  <button type="submit" class="btn btn-outline-info">Alterar Senha</button>
 </form>
 </div>
 

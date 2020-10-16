@@ -31,7 +31,7 @@ class redefinirController extends controller{
 	        		    ?>
                         <script type="text/javascript">
                         	alert("Senha alterada com sucesso!");
-                        	window.location.href="<?php echo BASE_URL; ?>login";
+                        	window.location.href="<?php echo BASE_URL; ?>entrar";
                         </script>
 	        		    <?php     		    
 	        		}   		

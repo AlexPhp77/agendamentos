@@ -1,16 +1,10 @@
 <?php
 if(!isset($_SESSION['logado']) && empty($_SESSION['logado']) OR empty($dados)){
-  unset($_SESSION['logado']);
+  //unset($_SESSION['logado']);
   ?>
   <script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>./"</script>
   <?php
   exit;  
-}
-
-if($permissoes == 'ADMINISTRADOR'){ /*Administrador não acessa a página usuário*/
-  ?>
-    <script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>./";</script>
-  <?php 
 }
 
   /*Verifica quantos dias há em um mês*/
@@ -34,9 +28,9 @@ if($permissoes == 'ADMINISTRADOR'){ /*Administrador não acessa a página usuár
           Tem certeza que deseja deletar sua conta?
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-info" data-dismiss="modal">CANCELAR</button>
+            <button type="button" class="btn btn-outline-info" data-dismiss="modal">CANCELAR</button>
            
-            <a href="<?php echo BASE_URL; ?>paciente/deletar/?id_usuario=<?php echo $_SESSION['logado']; ?>">
+            <a href="<?php echo BASE_URL; ?>usuario/?id_usuario=<?php echo $_SESSION['logado']; ?>">
             <button style="float: right; margin-left: 10px;" class="btn btn-danger">SIM</button>   
             </a>   
         </div>
@@ -46,7 +40,7 @@ if($permissoes == 'ADMINISTRADOR'){ /*Administrador não acessa a página usuár
 
   <div class="container-fluid">
     <hr/>
-    <h3>
+    <h3 style="color: #daa520;">
     <?php $nomes = explode(' ', $nome);
     echo "Olá, ".$nomes['0']."!";
     ?>      
@@ -54,7 +48,7 @@ if($permissoes == 'ADMINISTRADOR'){ /*Administrador não acessa a página usuár
     <hr/> 
   </div>
 
-  <form method="POST">  
+  <form method="POST" style="color: #daa520;">  
   <div class="form-row">
     <div class="col-md">
        <label for="nome">Nome completo</label>
@@ -66,20 +60,29 @@ if($permissoes == 'ADMINISTRADOR'){ /*Administrador não acessa a página usuár
   <div class="form-row">
     <div class="col-md-6">
        <label for="idade">Idade</label>
-       <input  value="<?php echo $idade; ?>" type="text" name="idade" class="form-control form-control-lg" id="idade" placeholder="Sua idade">      
+       <input value="<?php echo $idade; ?>" type="text" name="idade" class="form-control form-control-lg" id="idade" placeholder="Sua idade">      
     </div>
+
     <div class="col-md-6">
-       <label for="cpf">CPF</label>
-       <input value="<?php echo $cpf; ?>" type="text" name="cpf" class="form-control form-control-lg" id="cpf" placeholder="CPF">
+      <label for="sexo">Sexo</label>
+      <select name="sexo" id="sexo" class="form-control form-control-lg">
+      <option value="Masculino" <?php echo ($sexo=='Masculino')?'selected="selected"':''; ?>>Masculino</option> 
+      <option value="Feminino" <?php echo ($sexo=='Feminino')?'selected="selected"':''; ?>>Feminino</option>
+      </select>      
     </div>   
+
   </div>
- 
+
   <div class="form-row">
-    <div class="col-md">
+    <div class="col-md-6"> 
+      <label for="cpf">CPF</label>
+       <input value="<?php echo $cpf; ?>" type="text" name="cpf" class="form-control form-control-lg" id="cpf" placeholder="CPF">
+    </div> 
+     <div class="col-md-6">
        <label for="email">E-mail</label>
        <input value="<?php echo $email; ?>" type="text" name="email" class="form-control form-control-lg" id="email" placeholder="exemplo@email.com">      
-    </div>
-  </div> 
+    </div>    
+  </div>
 
    <div class="form-row">
     <div class="col-md">
@@ -111,7 +114,7 @@ if($permissoes == 'ADMINISTRADOR'){ /*Administrador não acessa a página usuár
     </div>  
   </div>
     <div style="margin-top: 10px">
-    	<button type="submit" class="btn btn-info">Editar</button>           
+      <button type="submit" class="btn btn-outline-info">Editar</button>           
     </div>   
   </form>    
 
@@ -121,9 +124,9 @@ if($permissoes == 'ADMINISTRADOR'){ /*Administrador não acessa a página usuár
     </button>
      
    
-     <button style="float: right;" class="btn btn-outline-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-      Marcar consulta <img width="15px" src="<?php echo BASE_URL; ?>assets/images/seta-baixo.svg">
-     </button>
+     <button style="float: right;" class="btn btn-outline-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Reservar <img width="15px" src="<?php echo BASE_URL; ?>assets/images/seta-baixo.svg">
+     </button>     
   
   <br/><br/>
   <hr/>
@@ -150,53 +153,89 @@ if($permissoes == 'ADMINISTRADOR'){ /*Administrador não acessa a página usuár
 
   <div class="collapse" id="collapseExample">
     <div class="container">
-    <form method="POST">
+      <h2>Obs: Não reserve domingos e feriados!</h2><br/>
+    <form method="POST" style="color: #daa520;">
       <div class="form-row">
-          <div class="form-group col-md-6">
-              <label for="data">Dia da consulta</label>           
+             
+
+          <div class="form-group col-md-4">
+              <label for="data">Dia</label> 
+              <input type="date" class="form-control form-control-lg" id="data" name="data">
+
+             
+
+              <!-- mostra apenas dias do mês atual
+              <label for="data">Dia</label>           
               <select class="form-control form-control-lg" id="data" name="data">
                 <option >Selecionar dia</option>
-                <?php for($i=1; $i <= $qtDiasMes; $i++): ?>
-            <option placeholder="Selecionar dia"><?php echo $i ?></option>
-              <?php endfor; ?>
-              </select>
+                <?php// for($i=1; $i <= $qtDiasMes; $i++): ?>
+              <option placeholder="Selecionar dia"><?php //echo $i ?></option>
+              <?php //endfor; ?>
+              </select>-->
           </div>
-          <div class="form-group col-md-6">
+
+
+          <div class="form-group col-md-4">
               <label for="hora">Hora início</label>
               <select class="form-control form-control-lg" id="hora" name="hora"> 
-                <option >08:00</option>
-                <option >09:00</option>
-                <option >10:00</option>
-                <option >11:00</option>
-                <option >14:00</option>
-                <option >15:00</option>
-                <option >16:00</option>        
-                <option >17:00</option>         
+                  <option >09:30</option>
+                  <option >10:00</option>
+                  <option >10:30</option>
+                  <option >11:00</option>
+                  <option >11:30</option>
+                  <option >12:00</option>
+                  <option >14:00</option>
+                  <option >14:30</option>
+                  <option >15:00</option>
+                  <option >15:30</option>
+                  <option >16:00</option>
+                  <option >16:30</option>        
+                  <option >17:00</option>
+                  <option >17:30</option> 
+                  <option >18:00</option>  
+                  <option >18:30</option>     
               </select>
+          </div>          
+          <div class="form-group col-md-4">
+            <label for="doutor">Barbeiro</label>
+                <select class="form-control form-control-lg" id="doutor" name="doutor">
+                    <option disabled selected>Selecionar</option>
+                    <?php foreach($funcionarios as $funcionario): ?>
+                      <option value="<?php echo $funcionario['id']; ?>"><?php echo $funcionario['nome']; ?></option>
+                    <?php endforeach; ?>                    
+                </select>            
           </div>
       </div>  
-          <button type="submit" class="btn btn-info">Reservar</button>
+          <button type="submit" class="btn btn-outline-info">Reservar</button>
       </form>
   </div>
   <hr/>    
-  </div> 
+  </div>
+
+<?php if(!empty($aviso)): ?>   
 
 <?php if($aviso['aviso'] == true): ?>
-    <?php for($i=0; $i < count($aviso['horas']); $i++): ?>   
-    <?php if(isset($_GET['id']) && !empty($_GET['id'])){ $id=addslashes($_GET['id']); } ?> 
-    <div id="aviso-reserva" class="alert alert-success" role="alert"> 
+    <?php for($i=0; $i < count($aviso['horas']); $i++): ?>  
 
-    <button type="button" class="close" aria-label="Close">      
-    <a href="<?php echo BASE_URL; ?>usuario/?id=<?php echo $aviso['horas'][$i]['id_usuario']; ?>&id_reserva=<?php echo $aviso['horas'][$i]['id'] ?>">
+    <?php if(isset($_SESSION['logado']) && !empty($_SESSION['logado'])){
+     $id= $_SESSION['logado'];}
+    ?> 
+
+    <div id="aviso-reserva" class="alert alert-success" role="alert">      
+    <button type="button" class="close" aria-label="Close"> 
+    <a href="<?php echo BASE_URL; ?>usuario/?id=<?php echo $id; ?>&id_reserva=<?php echo $aviso['horas'][$i]['id'] ?>">
       <span value="excluir" input="submit" aria-hidden="true">&times;</span>        
     </a>
     </button>
       <?php $datahora = date('d/m/Y \à\s H:i', strtotime($aviso['horas'][$i]['data_inicio'])); ?>
-        Você tem consulta marcada dia <?php echo $datahora; ?>
+        Você tem horário marcado dia <?php echo $datahora; ?> com o barbeiro
+        <?php echo $aviso['horas'][$i]['nome']; ?>
+       
     </div>
     <?php endfor; ?>
 <?php endif; ?>
 
+<?php endif; ?>
 
   <!--<?php /*if($aviso['aviso'] == true): ?>
     <div id="aviso-reserva" class="alert alert-success" role="alert">

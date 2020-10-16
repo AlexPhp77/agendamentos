@@ -17,12 +17,21 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
 
 <div class="container">
 
+  <hr/>
+  <div style="display: flex; justify-content: space-between;">
+    <h5 style="color: #daa520;" >Informações cliente</h5>
+    <a href="<?php echo BASE_URL; ?>lista">
+      <img width="30px" src="<?php echo BASE_URL; ?>assets/images/voltar.svg">    
+    </a>
+  </div>
+  <hr/>
+
   <!-- Modal -->
   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">DELETAR DADOS DO PACIENTE</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">DELETAR DADOS DO CLIENTE</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -31,9 +40,9 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
           Tem certeza que deseja excluir esse usuário? 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-info" data-dismiss="modal">CANCELAR</button>
+            <button type="button" class="btn btn-outline-info" data-dismiss="modal">CANCELAR</button>
             <?php if(isset($_GET['id'])){ $id = addslashes($_GET['id']);} ?>
-            <a href="<?php echo BASE_URL; ?>paciente/deletar/?id_usuario=<?php echo $id; ?>">
+            <a href="<?php echo BASE_URL; ?>cliente/deletar/?id_usuario=<?php echo $id; ?>">
             <button style="float: right; margin-left: 10px;" class="btn btn-danger">SIM</button>   
             </a>   
         </div>
@@ -41,7 +50,7 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
     </div>
   </div>
   
-  <form method="POST">  
+  <form method="POST" style="color: #daa520;">  
   <div class="form-row">
     <div class="col-md">
        <label for="nome">Nome completo</label>
@@ -107,7 +116,7 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
     </div>  
   </div>
     <div style="margin-top: 10px">
-    	<button type="submit" class="btn btn-info">Editar</button>           
+    	<button type="submit" class="btn btn-outline-info">Editar</button>           
     </div>   
   </form>    
 
@@ -117,8 +126,8 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
     </button>
      
    
-     <button style="float: right;" class="btn btn-outline-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-      Marcar consulta <img width="15px" src="<?php echo BASE_URL; ?>assets/images/seta-baixo.svg">
+     <button style="float: right;" class="btn btn-outline-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Reservar <img width="15px" src="<?php echo BASE_URL; ?>assets/images/seta-baixo.svg">
      </button>     
   
   <br/><br/>
@@ -146,7 +155,7 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
 
   <div class="collapse" id="collapseExample">
     <div class="container">
-    <form method="POST">
+    <form method="POST" style="color: #daa520;">
       <div class="form-row">
           <div class="form-group col-md-4">
               <label for="data">Dia da consulta</label>           
@@ -160,18 +169,26 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
           <div class="form-group col-md-4">
               <label for="hora">Hora início</label>
               <select class="form-control form-control-lg" id="hora" name="hora"> 
-                  <option >08:00</option>
-                  <option >09:00</option>
+                  <option >09:30</option>
                   <option >10:00</option>
+                  <option >10:30</option>
                   <option >11:00</option>
+                  <option >11:30</option>
+                  <option >12:00</option>
                   <option >14:00</option>
+                  <option >14:30</option>
                   <option >15:00</option>
-                  <option >16:00</option>        
-                  <option >17:00</option>         
+                  <option >15:30</option>
+                  <option >16:00</option>
+                  <option >16:30</option>        
+                  <option >17:00</option>
+                  <option >17:30</option> 
+                  <option >18:00</option>  
+                  <option >18:30</option>       
               </select>
           </div>          
           <div class="form-group col-md-4">
-            <label for="doutor">Doutor(a)</label>
+            <label for="doutor">Barbeiro</label>
                 <select class="form-control form-control-lg" id="doutor" name="doutor">
                     <option disabled selected>Selecionar</option>
                     <?php foreach($funcionarios as $funcionario): ?>
@@ -180,7 +197,7 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
                 </select>            
           </div>
       </div>  
-          <button type="submit" class="btn btn-info">Reservar</button>
+          <button type="submit" class="btn btn-outline-info">Reservar</button>
       </form>
   </div>
   <hr/>    
@@ -193,12 +210,12 @@ if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'
     <?php if(isset($_GET['id']) && !empty($_GET['id'])){ $id=addslashes($_GET['id']); } ?> 
     <div id="aviso-reserva" class="alert alert-success" role="alert">      
     <button type="button" class="close" aria-label="Close"> 
-    <a href="<?php echo BASE_URL; ?>paciente/?id=<?php echo $id; ?>&id_reserva=<?php echo $aviso['horas'][$i]['id'] ?>">
+    <a href="<?php echo BASE_URL; ?>cliente/?id=<?php echo $id; ?>&id_reserva=<?php echo $aviso['horas'][$i]['id'] ?>">
       <span value="excluir" input="submit" aria-hidden="true">&times;</span>        
     </a>
     </button>
       <?php $datahora = date('d/m/Y \à\s H:i', strtotime($aviso['horas'][$i]['data_inicio'])); ?>
-        Esse usuário tem consulta marcada dia <?php echo $datahora; ?> com o doutor(a)
+        Este cliente está marcado dia <?php echo $datahora; ?> com o barbeiro
         <?php echo $aviso['horas'][$i]['nome']; ?>
        
     </div>

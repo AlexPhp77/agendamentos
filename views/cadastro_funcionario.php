@@ -8,12 +8,12 @@
 
 ?> 
 
-<div class="container">
+<div class="container" style="color: #daa520">
   <hr/>
   <div style="display: flex; justify-content: space-between;">
-  	<h5 style="color: #17a2b8;" >Cadastrar funcionário</h5>
+  	<h5 style="color: #daa520;" >Cadastrar funcionário</h5>
     <a href="<?php echo BASE_URL; ?>./">
-    	<img width="30px" src="<?php echo BASE_URL; ?>assets/images/voltar.png">  	
+    	<img width="30px" src="<?php echo BASE_URL; ?>assets/images/voltar.svg">  	
     </a>
   </div>
   <hr/>
@@ -120,15 +120,20 @@
     	<div class="col-md-6">
     		<label for="senha">Cadastre a senha de acesso</label>
             <input type="password" name="senha" class="form-control form-control-lg" id="senha" placeholder="Senha deve ter 8 ou mais caracteres">    		
-    	</div>  
+    	</div> 
+
+      <?php if(3 === 4): ?> <!-- Apenas para nao mostra pq esse sistema não precisa-->
     	<div class="col-md-6">
 		    <label for="nivelacesso">Permissões</label>
 			<select name="nivelacesso" id="nivelacesso" class="form-control form-control-lg">
-			    <option disabled selected>Selecionar</option>
+          <option value="SECRETARIO">Secretário(a)</option>
+			    <!--<option disabled selected>Selecionar</option>-->
 			    <option value="DOUTOR">Odontologista</option>
-			    <option value="SECRETARIO">Secretário(a)</option>
+			    
 		    </select>      
-        </div>   
+        </div>
+      <?php endif; ?>   
+
     </div><br/>
 
       <?php if(empty($_SESSION['logadoFuncionario']) && $permissao['permissoes'] != 'SECRETARIO'): ?>
@@ -144,11 +149,11 @@
       <input style="border-radius: 0px; height: 50px;"  type="text" name="codigo" class="form-control form-control-lg col" id="codigo" placeholder="Insira o código">
         
       <div style="padding-left: 0px;" class="col-3">
-        <button style="float: right;" type="submit" class="btn btn-info">Cadastrar</button> 
+        <button style="float: right;" type="submit" class="btn btn-outline-info">Cadastrar</button> 
       </div>      
     </div>
     <?php else: ?>
-    <button style="float: right;" type="submit" class="btn btn-info">Cadastrar</button>
+    <button style="float: right;" type="submit" class="btn btn-outline-info">Cadastrar</button>
     <?php endif; ?> 
     <br/> 
     

@@ -125,7 +125,9 @@ class Usuarios extends Conexao{
 		if(filter_var($numero, FILTER_VALIDATE_INT)){
 			$this->numero = $numero; 
 			return true; 
-		} 	
+		} else{
+			return false; 
+		}
 	}
 	public function verificarEmail(){	
 
@@ -326,7 +328,7 @@ class Usuarios extends Conexao{
         }
 
     	?>
-    	<script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>./"</script>
+    	<script type="text/javascript">window.location.href="<?php echo BASE_URL; ?>lista"</script>
     	<?php
     }  
 
@@ -389,9 +391,9 @@ class Usuarios extends Conexao{
             $headers = "From: contato@clinica.com.br"."\r\n".
                        "X-Mailer: PHP/".phpversion();
 
-                       /*echo $mensagem;*/
+                       echo $mensagem;
 
-            mail($this->email, $assunto, $mensagem, $headers);
+           mail($this->email, $assunto, $mensagem, $headers);
 
             return true; 
                 

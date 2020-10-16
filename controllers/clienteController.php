@@ -1,6 +1,6 @@
 <?php 
 
-class pacienteController extends controller{
+class clienteController extends controller{
 
 	public function index(){
 
@@ -40,7 +40,12 @@ class pacienteController extends controller{
 			$id = addslashes($_GET['id']);            
 
 			$u->infoAllEditar($nomecompleto, $idade, $sexo, $cpf, $email, $telefone, $estado, $cidade, $cep, $rua, $numero, $id);          
-		}		       
+		}	
+
+		if(isset($_GET['id_usuario']) && !empty($_GET['id_usuario'])){
+			$id_usuario = addslashes($_GET['id_usuario']);
+			$u->deletar($id_usuario);
+		}	       
 
 		if(isset($id) && !empty($id)){
 			$dados = $u->getPaciente($id);
@@ -70,11 +75,11 @@ class pacienteController extends controller{
 			if(date('Y-m-d H:i', strtotime($data_inicio)) >= $data_atual){				
 
 				if($r->verificarDisponibilidade($data_inicio, $id_dentista) == false){
-			        $msg2 = "Já existe consulta marcada para esse horário!";
+			        $msg2 = "Já existe um serviço marcado para esse horário. Por favor, escolha outro!";
 			    } 
 
 			    if($r->addReservas($id, $id_dentista, $data_inicio) == true){
-					$msg3 = "Consulta marcada com sucesso!";					
+					$msg3 = "Horário reservado com sucesso!";					
 				}
 
 			} else{
@@ -106,6 +111,6 @@ class pacienteController extends controller{
 		    );
         }	      
                   
-		$this->loadTemplate('informacoes_paciente', $dados);		
+		$this->loadTemplate('informacoes_cliente', $dados);		
 	}
 }

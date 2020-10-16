@@ -1,3 +1,4 @@
+<link rel="manifest" href="ws.webmanifest.json">
 <?php 
 session_start();
 
@@ -10,9 +11,11 @@ if($_SESSION['seguranca'] != $token){
 	exit; 
 }
 
+require 'captcha/captcha.php';
+
 //require_once 'vendor/autoload.php';
 
-define('BASE_URL', 'http://localhost/agenda_new/');
+define('BASE_URL', 'http://localhost/barbearia/');
 //define('BASE_URL', 'https://amostra.lalehub.com.br/agenda/');
 date_default_timezone_set('America/Sao_Paulo');
 

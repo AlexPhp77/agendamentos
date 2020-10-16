@@ -10,7 +10,7 @@
 
 
 <div class="container cor-texto-form">
-  <h3>Login para os funcionários</h3>
+  <h3>Login para os clientes</h3>
   <form method="POST">
   <?php if(!empty($m)): ?>  
     <div class="alert alert-warning" style="margin-top: 10px;">

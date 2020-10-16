@@ -1,16 +1,42 @@
 $(document).ready(function(){
-		var table = $('#example').DataTable({
-		  'processing': true,     
+		var table = $('#example').DataTable({		
+		  'processing': true, 		    
 		  'type': 'POST',
 		  'dataType':'JSON',
 		  'ajax': {		    
 		          'url': BASE_URL+'tabela',
+		          'ajax': 'data.json'
+
+
 		},
+		responsive: {
+        details: {
+            renderer: $.fn.dataTable.Responsive.renderer.tableAll()
+        }
+        },
+		"columns": [			
+            { "data": "nome" },
+            { "data": "idade" },
+            { "data": "sexo" },
+            { "data": "cpf" },
+            { "data": "email" },
+            { "data": "telefone" }, 
+            { "data": "id" }, 
+            { "data": "acoes" }       
+   
+        ],
 		   "columnDefs": [ {
 	        "targets": -1,
-	        "data": null,
+	        "data": null,	       
 	        "defaultContent": "<div class='icones-tabela'><img class='img1' src='./assets/images/editar-icone.svg'><img data-toggle='modal' data-target='#exampleModalCenter' class='img2' src='./assets/images/lixeira.svg'></div>"
-        }],		
+        },
+
+        {
+            "targets": [ -2 ],
+            "visible": false
+        }
+
+        ],		
 		  'language':{
 		    "sEmptyTable": "Nenhum registro encontrado",
 		    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -51,24 +77,42 @@ $(document).ready(function(){
 		}	
    });
 
-	$('#example tbody').on( 'click', 'img.img1', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-            window.open(BASE_URL+'paciente/?id='+data[6], '_self');
-        //alert( data[0] +"'s salary is: "+ data[ 6 ] );
-    });
+	$('#example tbody').on( 'click', 'img.img1', function () {  
 
+		/*if(typeof id === 'undefined'){
+			id = table.row( this ).data().id;
+				
+		} else if(typeof id === 'undefined'){
+			id = table.row($(this).parents('td')).data().id;
+		}*/
 
+		var rows = table.rows( $(this).parents('td') ).indexes();
+        var data = table.rows( rows ).data();	
+        
+        //data = JSON.stringify(data);
+        
+		console.log(data[0]['id']);				
+
+		//Object.values(data[0].id)
+		
+		//id = table.row($(this).parents('td')).data().id;		
+		
+        window.open(BASE_URL+'cliente/?id='+data[0]['id'], '_self'); // abre link do id coluna        
+    });  
+
+    
 	$('#example tbody').on( 'click', 'img.img2', function () {
-        var data = table.row( $(this).parents('tr') ).data();   
+	    //id = table.row( this ).data().id;	 
 
-        $('#usuarioid').val(data[6]);
+	   //var data = table.row().data();  
 
-        //document.write('<form method="POST"><input type="hidden" value='+data[6]+' name="id"></form>');
-       
-       // preciso adicionar um value em um input oculto no modal 
-            
-       // window.open(BASE_URL+'paciente/deletar/?id_usuario='+data[6], '_self');          
-       // alert( data[0] +"'s salary is: "+ data[ 6 ] );
+	   var rows = table.rows( $(this).parents('td') ).indexes();
+       var data = table.rows( rows ).data();	
+
+        $('#usuarioid').val(data[0]['id']);     
     });	
+
+    $('#example_paginate').removeClass('dataTables_paginate');
+    $('#example_paginate').addClass('float-right');
 });
 

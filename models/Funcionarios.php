@@ -251,7 +251,7 @@ class Funcionarios extends Conexao{
 	public function getFuncionarios(){		 
 
         $dados = array();
-		$sql = $this->pdo->query("SELECT id, nome FROM funcionarios WHERE permissoes = 'ODONTOLOGISTA' ORDER BY nome ASC");        
+		$sql = $this->pdo->query("SELECT id, nome FROM funcionarios WHERE permissoes = 'SECRETARIO' ORDER BY nome ASC");        
         if($sql->rowCount() > 0){
         	$dados = $sql->fetchAll();
         } return $dados; 

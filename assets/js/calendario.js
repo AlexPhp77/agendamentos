@@ -8,9 +8,15 @@
     var calendarEl = document.getElementById('calendar');   
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-
+     // themeSystem: 'bootstrap', 
+      
       height: '100%',
-     // height: 'auto',
+      aspectRatio: 2,
+      expandRows: true,
+      //height: 'auto',   
+      windowResize: function(arg) {/*responsivo*/    
+      },  
+      hiddenDays: [ 0 ],/*bloquear dias da semana - domingo*/
       locale: 'pt-br',
       contentHeight: 500,
       expandRows: true,      
@@ -23,11 +29,13 @@
       selectable: true,
       //nowIndicator: true,
       dayMaxEvents: 4, // allow "more" link when too many events   
+      
 
       headerToolbar: {
         left: 'prevYear,prev,next,nextYear today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek custom1'
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek custom1',
+       
       },  
 
       customButtons: {
@@ -42,10 +50,21 @@
 
       },
 
-      businessHours: {
-      startTime: '08:00', // a start time (10am in this example)
-      endTime: '18:00', // an end time (6pm in this example)
-      },
+      businessHours: [
+
+        { /*especifica horários de trabalho */
+          daysOfWeek: [ 1, 2, 3, 4, 5 ], /*dias da semana*/
+          startTime: '09:30', 
+          endTime: '19:00' 
+        }, 
+
+        {
+          daysOfWeek: [ 6 ], 
+          startTime: '09:30', 
+          endTime: '12:00' 
+        }
+
+      ],
       
       events: {
 
@@ -122,7 +141,7 @@
 
 
     select: function(arg) {
-      var title = prompt('Título do evento:');
+      var title = prompt('Breve Descrição:');
       if (title) {
           /*calendar.addEvent({
             title: title,
@@ -173,11 +192,11 @@
         }
       },
 
-    });
+    });   
 
     if ($("#calendar").length){ 
  
-        calendar.render();  
+        calendar.render();      
+    }    
      
-    }   
   });

@@ -2,8 +2,10 @@
 
 class Reservas extends Conexao{
 
+	public $qtavisos; 
+
 	/*Refazendo partes do sistema*/
-	public function listarDatas(){
+	public function listarDatas(){		
 
 		$sql = $this->pdo->query("SELECT * FROM reserva");  
         $dados = array();
@@ -37,9 +39,14 @@ class Reservas extends Conexao{
 
 		if(isset($_POST['title'])){
 
-			 $title = $_POST['title'];
+		$title = addslashes($_POST['title']);
         $start = date('Y-m-d H:i', strtotime($_POST['start']));
         $end = date('Y-m-d H:i', strtotime($_POST['end']));
+        if(!empty($_POST['nome'])){
+        	$idusuario = addslashes($_POST['nome']);
+        } else{
+        	$idusuario = NULL;
+        }
 
         date_default_timezone_set('America/Sao_Paulo'); 
 
@@ -92,8 +99,9 @@ class Reservas extends Conexao{
     //echo  $title;
     //var_dump($start);
 
-    $sql = $this->pdo->prepare("INSERT INTO reserva SET titulo = :titulo, data_inicio = :data_inicio, data_fim = :data_fim, all_day = :allDay, cor = :cor");
+    $sql = $this->pdo->prepare("INSERT INTO reserva SET titulo = :titulo, data_inicio = :data_inicio, data_fim = :data_fim, all_day = :allDay, cor = :cor, id_usuario = :id_usuario");
     $sql->bindValue(':titulo', $title);
+    $sql->bindValue(':id_usuario', $idusuario);
     if(is_object($start)){
     	$sql->bindValue(':data_inicio',  $start->format('Y-m-d H:i'));
     	$sql->bindValue(':data_fim',  $end->format('Y-m-d H:i'));
@@ -130,14 +138,19 @@ class Reservas extends Conexao{
 	}
 
 	public function excluirDatas(){
-
-		$id = $_POST['id'];
-	      
+         
+        if(!empty($_POST['id'])){
+        	$id = addslashes($_POST['id']);
+        } else{
+        	$id = addslashes($_POST['id_reserva']);
+        }		      
 	    //echo $id."<br/>";              
 
 	    $sql = $this->pdo->prepare("DELETE FROM reserva WHERE id = :id");
 	    $sql->bindValue(':id', $id);        
-	    $sql->execute();        
+	    $sql->execute();  
+
+	    header("Location: ".BASE_URL);      
 	}
 
     /**************************************************************/
@@ -226,12 +239,18 @@ class Reservas extends Conexao{
 	
 	   	if($this->verificarDisponibilidade($data_inicio, $id_dentista)){
 
-		$sql = $this->pdo->prepare("INSERT reserva SET data_inicio = :data_inicio, data_fim = :data_fim, id_usuario = :id_usuario, id_dentista = :id_dentista");
-		$sql->bindValue(':id_usuario', $id);
-		$sql->bindValue(':id_dentista', $id_dentista);
-		$sql->bindValue(':data_inicio', $data_inicio);		
-		$sql->bindValue(':data_fim', date('Y-m-d H:i', strtotime($data_inicio.'+59 minutes')));
-		$sql->execute();	
+	   		$day = date("N", strtotime($data_inicio));
+        
+        if($day != 6 || $day != 7){
+			$sql = $this->pdo->prepare("INSERT reserva SET data_inicio = :data_inicio, data_fim = :data_fim, id_usuario = :id_usuario, id_dentista = :id_dentista");
+			$sql->bindValue(':id_usuario', $id);
+			$sql->bindValue(':id_dentista', $id_dentista);
+			$sql->bindValue(':data_inicio', $data_inicio);		
+			$sql->bindValue(':data_fim', date('Y-m-d H:i', strtotime($data_inicio.'+30 minutes')));
+			$sql->execute();	
+        } else{
+        	return false; 
+        }
 
 		return true; 
 		
@@ -268,11 +287,19 @@ class Reservas extends Conexao{
 		$sql->execute();
 		
 		if($sql->rowCount() > 0 ){
-			return $dados = $sql->fetchAll();
 
-		} else{
+			$this->qtavisos = $sql->rowCount(); 
+			
+			$dados = $sql->fetchAll();
+
+
+		} 
 			return $dados; 
-		}
+		
+	}
+
+	public function getqtavisos(){
+		return $this->qtavisos;
 	}
 
 	public function deletarHorarios(){

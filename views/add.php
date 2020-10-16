@@ -1,19 +1,9 @@
-<?php
-
-    if(!isset($_SESSION['logadoFuncionario']) && empty($_SESSION['logadoFuncionario'])){
-      ?>
-      <script type="text/javascript">window.location.href="./"</script>
-      <?php 
-    } 
-
-      
-?> 
 
 <div class="container" style="color:#daa520;">
   <hr/>
   <div style="display: flex; justify-content: space-between;">
-    <h5 style="color: #daa520;" >Cadastrar cliente</h5>
-    <a href="<?php echo BASE_URL; ?>lista">
+    <h5 style="color: #daa520;" >Cadastro</h5>
+    <a href="<?php echo BASE_URL; ?>./">
       <img width="30px" src="<?php echo BASE_URL; ?>assets/images/voltar.svg">    
     </a>
   </div>
@@ -86,7 +76,7 @@
  
   <div class="form-row">
     <div class="col-md-6">
-       <label for="email">E-mail (Opcional)</label>
+       <label for="email">E-mail</label>
        <input type="text" name="email" class="form-control form-control-lg" id="email" placeholder="exemplo@email.com">      
     </div>
     <div class="col-md-6">
@@ -117,29 +107,31 @@
        <input type="text" name="numero" class="form-control form-control-lg" id="numero" placeholder="Numero">
     </div>  
   </div> <br/>
-    <!--<div class="form-group">
+   <div class="form-group">
       <label for="senha">Cadastre sua senha de acesso</label>
       <input type="password" name="senha" class="form-control form-control-lg" id="senha" placeholder="Sua senha deve ter 8 ou mais caracteres">
-    </div>-->
-      <?php if(empty($_SESSION['logadoFuncionario']) && $permissao['permissoes'] != 'SECRETARIO'): ?>
+    </div>   
       
       <label for="codigo">Captcha</label>
       
       <div class="form-group row">
         
-      <div style="margin-right: 30px" class="col-md-1">
+      <div class="col-md" >
         <img  src="<?php echo BASE_URL; ?>captcha/imagem.php">          
-      </div>    
+      </div>
        
+        <div style=" width: 100%;" class="col-md-10" >
       <input style="border-radius: 0px; height: 50px;"  type="text" name="codigo" class="form-control form-control-lg col" id="codigo" placeholder="Insira o código">
-        
-      <div style="padding-left: 0px;" class="col-3">
-        <button style="float: right;" type="submit" class="btn btn-outline-info">Cadastrar</button> 
-      </div>      
+        </div>       
+       
     </div>
-    <?php else: ?>
-    <button style="float: right;" type="submit" class="btn btn-outline-info">Cadastrar</button>
-    <?php endif; ?> 
+
+     <div class="form-group ">
+        <button style="float: right;" type="submit" class="btn btn-outline-info">Cadastrar</button> 
+      </div>    
+  
+ 
+  
     <br/> 
     
   </form> 

@@ -16,8 +16,8 @@ class Conexao{
 			$config['dbpass'] = '';
 			
 		} else{			
-			$config['dbname'] = 'lalehu09_agenda';
-			$config['host'] = 'localhost';
+			$config['dbname'] = '';
+			$config['host'] = '';
 			$config['dbuser'] = '';
 			$config['dbpass'] = '';			
 		}
